@@ -95,7 +95,7 @@ button{font:inherit}
 /* ---------------- hero ---------------- */
 .hero{
   position:relative;display:grid;justify-items:center;align-content:center;
-  min-height:100svh;overflow-anchor:none;
+  min-height:100svh;overflow-anchor:none;overflow-x:clip;
   padding:clamp(112px,13svh,152px) 0 clamp(72px,10svh,120px);
 }
 .botany{
@@ -139,9 +139,8 @@ button{font:inherit}
 .sb-3d{
   position:relative;flex:1 1;min-width:0;max-width:900px;
   perspective:1750px;perspective-origin:50% 46%;
-  --mat:calc(var(--bw,0px) * .016);   /* the white margin around the plate */
-  --mat-paper:#fdfcfa;                /* not pure white -- stock, not screen */
-  --tex:calc(var(--bw,0px) * .085);   /* grain tile, scaled to the book */
+  --mat:calc(var(--bw,0px) * .0111);  /* the white border: 10px at the full 900px width */
+  --stock:#fff;                       /* the border and the paper behind the art */
 }
 .sb-tilt{
   position:relative;
@@ -149,23 +148,33 @@ button{font:inherit}
   transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
   will-change:transform;
 }
-/* The plate is matted: a white margin of --mat on all four sides, with the
-   photograph filling what is left.  The book is therefore taller than the
-   photograph -- 1 / ((1 - 2m)/1.792 + 2m) with m = .016 -- and every surface
-   that paints the photo has to inset it by the same amount. */
+/* Each plate sits inside a white border of --mat on all four sides, so the
+   book is a little taller than the photograph:
+   1 / ((1 - 2m)/1.7917 + 2m) with m = .0111.  Every surface that paints the
+   photograph insets it by the same amount.  The page block below it is a
+   few stepped paper edges, which is what makes it read as a thick book
+   rather than a flat card. */
 .sb-book{
-  position:relative;width:100%;aspect-ratio:1.7477;
+  position:relative;width:100%;aspect-ratio:1.7608;
   transform-style:preserve-3d;z-index:1;
+  box-shadow:
+    -1px 1px 0 #e9e3d4, 1px 1px 0 #e9e3d4,
+    -2px 2px 0 #f6f2e8, 2px 2px 0 #f6f2e8,
+    -3px 3px 0 #ddd6c4, 3px 3px 0 #ddd6c4,
+    -4px 4px 0 #f3eee2, 4px 4px 0 #f3eee2,
+    -5px 5px 0 #d4ccb7, 5px 5px 0 #d4ccb7;
 }
-/* the crease lives on the book, not on the settled page, so it no longer
-   pops out of existence the moment a leaf lifts */
+/* the crease and the pages' own curvature live on the book, not on the
+   settled page, so they do not pop out of existence the moment a leaf lifts.
+   Each half darkens toward the gutter, like paper that bows up from the
+   spine. */
 .sb-book:after{
-  content:"";position:absolute;top:var(--mat);bottom:var(--mat);left:50%;
-  width:calc(var(--bw,0px) * .105);transform:translateX(-50%);
+  content:"";position:absolute;inset:0;
   pointer-events:none;z-index:5;
-  background:linear-gradient(90deg,
-    rgba(52,38,20,0) 0%,rgba(52,38,20,.05) 32%,rgba(52,38,20,.125) 50%,
-    rgba(52,38,20,.05) 68%,rgba(52,38,20,0) 100%);
+  background:
+    linear-gradient(90deg,
+      rgba(52,38,20,0) 39%,rgba(52,38,20,.07) 46.5%,rgba(52,38,20,.22) 50%,
+      rgba(52,38,20,.07) 53.5%,rgba(52,38,20,0) 61%);
   opacity:calc(1 - var(--shade,0));
 }
 
@@ -195,15 +204,15 @@ button{font:inherit}
   filter:blur(4px);
   opacity:calc(1 - var(--shade,0) * .62);
 }
-.sb-full{position:absolute;inset:0;background:var(--mat-paper);overflow:hidden}
+.sb-full{position:absolute;inset:0;background:var(--stock);overflow:hidden}
 .sb-full img{
   position:absolute;top:var(--mat);left:var(--mat);
   width:calc(100% - 2 * var(--mat));height:auto;display:block;
 }
 /* The two halves either side of the gutter.  Each shows the full-width
    photograph through a half-width window, so the image is positioned in
-   book pixels and the margin is carried on both. */
-.sb-half{position:absolute;top:0;bottom:0;width:50%;overflow:hidden;background:var(--mat-paper)}
+   book pixels and the border is carried on both. */
+.sb-half{position:absolute;top:0;bottom:0;width:50%;overflow:hidden;background:var(--stock)}
 .sb-half.left{left:0}
 .sb-half.right{left:50%}
 .sb-half-img{
@@ -222,22 +231,6 @@ button{font:inherit}
 }
 .gutter-shade.left{right:0;background:linear-gradient(270deg,rgba(52,38,20,.30),rgba(52,38,20,0) 82%)}
 .gutter-shade.right{left:0;background:linear-gradient(90deg,rgba(52,38,20,.24),rgba(52,38,20,0) 82%)}
-
-/* Matte magazine stock: a seamless tooth over every paper surface, so it
-   bends with the leaf instead of floating above it, plus one broad sheen on
-   the flat frame above -- the varnish catching the room. */
-.sb-full:after,.sb-half:after,.face:after{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:9;
-  background-image:url(data:image/png;base64,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);
-  background-size:var(--tex) var(--tex);
-  opacity:.62;
-}
-.sb-3d:after{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:30;
-  background:linear-gradient(104deg,
-    rgba(255,255,255,0) 10%,rgba(255,255,255,.15) 26%,rgba(255,255,255,0) 43%,
-    rgba(255,255,255,0) 71%,rgba(255,255,255,.09) 85%,rgba(255,255,255,0) 97%);
-}
 
 /* ---- the turning leaf: nested strips forming a curved surface ---- */
 .curl{
@@ -261,7 +254,7 @@ button{font:inherit}
 .face{
   position:absolute;top:0;bottom:0;left:0;right:-1.1px;
   backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  background-color:var(--mat-paper);
+  background-color:var(--stock);
   background-repeat:no-repeat;
   background-size:calc(var(--bw,0px) - 2 * var(--mat)) auto;
   background-position-y:var(--mat);
@@ -302,25 +295,11 @@ button{font:inherit}
   padding:5px 7px;background:rgba(250,246,238,.62);
   -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
 }
-.tool{
-  width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;
-  border:0;border-radius:50%;background:transparent;color:var(--ink-soft);
-  cursor:pointer;transition:background-color .18s ease,color .18s ease;
-}
-.tool:hover{background:rgba(255,252,244,.9);color:var(--ink)}
-.tool[aria-pressed="true"]{background:rgba(154,106,62,.16);color:var(--earth)}
-.tool:disabled{opacity:.32;cursor:default;background:transparent}
-.tool svg{width:15px;height:15px;display:block}
-.tool-sep{width:1px;height:17px;background:var(--hairline);margin:0 2px}
 .plate-count{
   font-size:11px;letter-spacing:.1em;color:var(--ink-faint);
   font-variant-numeric:tabular-nums;padding:0 6px;white-space:nowrap;
 }
 .plate-count b{font-weight:400;color:var(--ink)}
-.zoom-read{
-  font-size:11px;letter-spacing:.1em;color:var(--ink-faint);
-  min-width:40px;text-align:center;font-variant-numeric:tabular-nums;
-}
 
 .sb-zone{position:absolute;top:0;bottom:0;border:0;background:transparent;cursor:grab;z-index:60;-webkit-tap-highlight-color:transparent}
 .sb-zone:active{cursor:grabbing}
@@ -480,6 +459,73 @@ button{font:inherit}
   .tier-price{margin-left:0}
 }
 
+/* ---- the booking form ---- */
+.book-form{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px clamp(16px,3vw,28px);
+  max-width:680px;margin:clamp(24px,4vh,36px) 0 0;
+}
+.book-form .wide,.book-form .form-foot{grid-column:1 / -1}
+.book-form .field{display:grid;gap:8px;align-content:start;min-width:0}
+.book-form label{
+  font-size:11px;letter-spacing:var(--track-caps);text-transform:uppercase;color:var(--ink-soft);
+}
+.book-form .opt{letter-spacing:.08em;text-transform:none;color:var(--ink-faint)}
+.book-form input,.book-form select,.book-form textarea{
+  width:100%;font:inherit;font-size:16px;line-height:1.4;color:var(--ink);
+  padding:12px 14px;border:1px solid var(--hairline);border-radius:0;
+  background:rgba(255,252,244,.5);
+  -webkit-appearance:none;appearance:none;
+  transition:border-color .2s ease,background-color .2s ease;
+}
+.book-form select{
+  padding-right:38px;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--earth) 50%),linear-gradient(135deg,var(--earth) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 55%,calc(100% - 14px) 55%;
+  background-size:6px 6px,6px 6px;background-repeat:no-repeat;
+}
+.book-form textarea{resize:vertical;min-height:120px}
+.book-form input:hover,.book-form select:hover,.book-form textarea:hover{border-color:var(--ink-faint)}
+.book-form input:focus-visible,.book-form select:focus-visible,.book-form textarea:focus-visible{
+  outline:2px solid var(--earth);outline-offset:2px;border-color:var(--earth);
+  background:rgba(255,252,244,.9);
+}
+.book-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:6px}
+.form-btn{
+  padding:15px 30px;border:1px solid var(--earth);background:var(--earth);color:var(--paper);
+  font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;
+  transition:background-color .2s ease,color .2s ease;
+}
+.form-btn:hover{background:#85592f;border-color:#85592f}
+.form-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.form-btn:disabled{opacity:.55;cursor:default}
+.form-status{margin:0;font-size:15px;line-height:1.5;color:var(--ink-soft);max-width:44ch}
+.form-status:empty{display:none}
+.form-thanks{margin:clamp(24px,4vh,36px) 0 0}
+@media (max-width:640px){
+  .book-form{grid-template-columns:1fr}
+}
+
+/* HOLIDAY EDITION START */
+.holiday-banner{
+  display:block;width:100%;padding:13px clamp(20px,5vw,48px);text-align:center;
+  background:var(--earth);color:var(--paper);text-decoration:none;
+  font-size:12.5px;line-height:1.5;letter-spacing:var(--track-nav);text-transform:uppercase;
+  transition:background-color .2s ease;
+}
+.holiday-banner:hover{background:#85592f}
+.holiday-banner:focus-visible,.holiday-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.holiday-cta{margin:clamp(24px,4vh,36px) 0 0}
+.holiday-btn{
+  display:inline-block;padding:14px 26px;border:1px solid var(--earth);
+  color:var(--earth);text-decoration:none;
+  font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+  transition:background-color .2s ease,color .2s ease;
+}
+.holiday-btn:hover{background:var(--earth);color:var(--paper)}
+.holiday-fine{margin-top:14px;font-size:13px}
+/* HOLIDAY EDITION END */
+
 .foot{font-size:11.5px;letter-spacing:var(--track-caps);text-transform:uppercase;
   color:var(--ink-faint);text-align:center;margin-top:clamp(48px,7vh,84px);padding-bottom:14px}
 .foot.legal{
@@ -500,11 +546,13 @@ button{font:inherit}
     <nav>
       <a href="#about">About</a>
       <a href="#experiences">Experiences</a>
-      <a href="#plates">Pairings</a>
+      <!-- HOLIDAY EDITION START -->
+      <a href="#holiday">Holiday</a>
+      <!-- HOLIDAY EDITION END -->
       <a href="#contact">Book</a>
       <div class="top-socials">
         <a href="https://www.instagram.com/vibzbar" target="_blank" rel="me noopener" class="icon-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a>
-        <a href="tel:+19165550134" class="icon-btn" aria-label="Phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6.2 3.4h3.1l1.6 4-2 1.3a12 12 0 0 0 5.4 5.4l1.3-2 4 1.6v3.1a1.8 1.8 0 0 1-2 1.8A15.6 15.6 0 0 1 4.4 5.4a1.8 1.8 0 0 1 1.8-2Z"/></svg></a>
+        <a href="tel:[YOUR PHONE]" class="icon-btn" aria-label="Phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6.2 3.4h3.1l1.6 4-2 1.3a12 12 0 0 0 5.4 5.4l1.3-2 4 1.6v3.1a1.8 1.8 0 0 1-2 1.8A15.6 15.6 0 0 1 4.4 5.4a1.8 1.8 0 0 1 1.8-2Z"/></svg></a>
         <a href="mailto:hello@vibzbar.com" class="icon-btn" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.4" y="4.6" width="19.2" height="14.8" rx="2.4"/><path d="m3.2 6.4 8.8 6.6 8.8-6.6"/></svg></a>
       </div>
     </nav>
@@ -514,7 +562,7 @@ button{font:inherit}
     <img class="botany l" src="vibz/botany-left.svg" alt="" aria-hidden="true">
     <img class="botany r" src="vibz/botany-right.svg" alt="" aria-hidden="true">
 
-    <p class="hero-kicker">Mix · Sip · Unwind / Luxury Mobile Bartending @ El Dorado Hills</p>
+    <p class="hero-kicker">Mix · Sip · Unwind / Luxury Mobile Bartending</p>
 
     <div class="sb-wrap" id="sbWrap">
       <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -538,14 +586,10 @@ button{font:inherit}
         </button>
       </div>
       <div class="sb-captions" id="sbCaptions"></div>
-      <div class="sb-tools" role="group" aria-label="view controls">
-        <button class="tool" id="zOut" aria-label="zoom out"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8.6" cy="8.6" r="5.6"/><path d="M12.8 12.8 17.4 17.4M6.2 8.6h4.8"/></svg></button>
-        <span class="zoom-read" id="zRead">100%</span>
-        <button class="tool" id="zIn" aria-label="zoom in"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8.6" cy="8.6" r="5.6"/><path d="M12.8 12.8 17.4 17.4M6.2 8.6h4.8M8.6 6.2v4.8"/></svg></button>
-        <span class="tool-sep" aria-hidden="true"></span>
-        <span class="plate-count" id="plateCount" aria-live="polite">01 / 12</span>
+      <div class="sb-tools">
+        <span class="plate-count" id="plateCount" aria-live="polite">01 / 10</span>
       </div>
-      <p class="sb-hint" id="sbHint">Drag the page to turn · Twelve plates</p>
+      <p class="sb-hint" id="sbHint">Drag the page to turn</p>
     </div>
 
     <button class="hero-down" id="heroDown" aria-label="scroll to about">
@@ -555,6 +599,10 @@ button{font:inherit}
       </svg>
     </button>
   </section>
+
+  <!-- HOLIDAY EDITION START -->
+  <a class="holiday-banner" href="#contact">The Holiday Edition: five winter cocktails, Nov 20 to Dec 31. Eight dates.</a>
+  <!-- HOLIDAY EDITION END -->
 
   <div class="rule" aria-hidden="true"></div>
 
@@ -644,13 +692,40 @@ button{font:inherit}
 
   <div class="rule short" aria-hidden="true"></div>
 
-  <section id="plates" class="plates">
-    <p class="section-label">The pairings</p>
-    <p class="lede">Twelve plates. Pick one and the book turns to it.</p>
-    <ol class="plate-list" id="plateList"></ol>
+  <!-- HOLIDAY EDITION START -->
+  <section id="holiday" class="plates">
+    <p class="section-label">The Holiday Edition</p>
+    <p class="lede">Five cocktails. Six weeks. Eight dates.</p>
+    <p class="bio bio-note">Same three experiences, same prices. Every holiday booking gets a winter menu that only exists Nov 20 to Dec 31.</p>
+    <ol class="step-list">
+      <li class="step">
+        <span class="n">01</span>
+        <div><h3>Spiced Pear Old Fashioned</h3><p>Bourbon, spiced pear syrup, orange oil.</p></div>
+      </li>
+      <li class="step">
+        <span class="n">02</span>
+        <div><h3>Cranberry Rosemary Spritz</h3><p>Sparkling wine, cranberry, rosemary, a frozen cranberry garnish.</p></div>
+      </li>
+      <li class="step">
+        <span class="n">03</span>
+        <div><h3>Brown Butter Espresso Martini</h3><p>The dessert course in a glass.</p></div>
+      </li>
+      <li class="step">
+        <span class="n">04</span>
+        <div><h3>Winter Citrus Paloma</h3><p>Tequila, blood orange, grapefruit, salted rim.</p></div>
+      </li>
+      <li class="step">
+        <span class="n">05</span>
+        <div><h3>Pomegranate Ginger Fizz</h3><p>Zero-proof, made with the same care.</p></div>
+      </li>
+    </ol>
+    <p class="bio bio-rule">For New Year's Eve, add Champagne Toast Service. For the late crowd, the Espresso Martini Station.</p>
+    <p class="holiday-cta"><a class="holiday-btn" href="#contact">Book a holiday date</a></p>
+    <p class="bio bio-note holiday-fine">December bookings close Nov 20.</p>
   </section>
 
   <div class="rule short" aria-hidden="true"></div>
+  <!-- HOLIDAY EDITION END -->
 
   <section id="questions" class="plates">
     <p class="section-label">Questions</p>
@@ -688,8 +763,54 @@ button{font:inherit}
   <section id="contact" class="contact">
     <p class="section-label">Book</p>
     <p class="bio bio-lead">Let's talk about your night.</p>
-    <p class="bio">Tell us the date and the headcount. We'll send a proposal within 48 hours. Write to <a class="bio-link" href="mailto:hello@vibzbar.com">hello@vibzbar.com</a> — we read everything, and we answer all of it.</p>
     <p class="bio bio-note">Bookings begin at $950. Saturdays in peak season, $1,350.</p>
+    <form class="book-form" id="bookForm" action="https://formspree.io/f/[FORMSPREE_ID]" method="POST">
+      <div class="field">
+        <label for="bf-name">Name</label>
+        <input id="bf-name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="bf-email">Email</label>
+        <input id="bf-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="bf-phone">Phone</label>
+        <input id="bf-phone" name="phone" type="tel" autocomplete="tel" required>
+      </div>
+      <div class="field">
+        <label for="bf-date">Event date</label>
+        <input id="bf-date" name="event_date" type="date" required>
+      </div>
+      <div class="field">
+        <label for="bf-guests">Guest count</label>
+        <input id="bf-guests" name="guest_count" type="number" min="10" step="1" inputmode="numeric" required>
+      </div>
+      <div class="field">
+        <label for="bf-city">Event location (city)</label>
+        <input id="bf-city" name="event_city" type="text" autocomplete="address-level2" required>
+      </div>
+      <div class="field wide">
+        <label for="bf-type">Event type</label>
+        <select id="bf-type" name="event_type" required>
+          <option value="" disabled selected>Choose one</option>
+          <option>Holiday party</option>
+          <option>Birthday</option>
+          <option>Engagement</option>
+          <option>Wedding</option>
+          <option>Corporate</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field wide">
+        <label for="bf-notes">Tell us about the night <span class="opt">(optional)</span></label>
+        <textarea id="bf-notes" name="message" rows="5"></textarea>
+      </div>
+      <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="form-foot wide">
+        <button type="submit" class="form-btn">Check Your Date</button>
+        <p class="form-status" id="bookStatus" role="status" aria-live="polite"></p>
+      </div>
+    </form>
     <p class="contact-social">
       <a class="bio-link" href="mailto:hello@vibzbar.com">hello@vibzbar.com</a>
       <a class="bio-link" href="https://www.instagram.com/vibzbar" target="_blank" rel="me noopener">@vibzbar</a>
@@ -702,8 +823,8 @@ button{font:inherit}
 
 <script>
 /* =====================================================================
-   VIBZ — the pairing book.
-   Twelve photographic plates, each a drink and the thing you eat with it.
+   VIBZ — the cocktail book.
+   Ten plates, one drink each.
    The plate runs to the trimmed edge of the page rather than sitting
    inside a painted border, so the book takes the photograph's own shape
    and the crease down the middle is drawn by .sb-book:after.  The leaf that
@@ -717,32 +838,28 @@ const DIR='vibz/plates/';
    sketches with nothing to read, so a title was description enough; these
    carry a written-up recipe, and a screen reader should get it too. */
 /* `note` is what the plate shows.  It becomes the image's alt text, so the
-   pairing reaches a screen reader as well as an eye. */
+   drink reaches a screen reader as well as an eye. */
 const PAGES=[
-  {file:'the-toast.jpg',          title:'The Toast',            place:'The welcome pour',
-   note:'two signature cocktails raised over a board of cheese and prosciutto'},
-  {file:'gin-tonic.jpg',          title:'Gin & Tonic',          place:'The copa',
-   note:'a copa of gin and tonic with cucumber and juniper, beside artichoke and feta'},
-  {file:'gin-pizza.jpg',          title:'Gin & Pizza',          place:'Cocktail hour',
-   note:'two berry and cucumber gin coolers with a prosciutto and rocket pizza'},
-  {file:'negroni-tataki.jpg',     title:'Negroni & Tataki',     place:'Before dinner',
-   note:'a negroni with orange peel beside seared beef tataki'},
-  {file:'old-fashioned-nuts.jpg', title:'Old Fashioned & Nuts', place:'The slow one',
-   note:'an old fashioned over one large cube with a bowl of roasted nuts'},
-  {file:'highball-karaage.jpg',   title:'Highball & Karaage',   place:'Late service',
-   note:'a whisky highball with lemon beside a plate of karaage'},
-  {file:'highball-almonds.jpg',   title:'Highball & Almonds',   place:'The long pour',
-   note:'a tall highball with a bowl of marcona almonds and green olives'},
-  {file:'highball-pickles.jpg',   title:'Highball & Pickles',   place:'Between courses',
-   note:'a highball with lemon beside a small dish of Japanese pickles'},
-  {file:'rum-bao.jpg',            title:'Rum & Bao',            place:'The second act',
-   note:'dark rum with lime and mint beside steamed bao buns'},
-  {file:'sake-yakitori.jpg',      title:'Sake & Yakitori',      place:'The quiet table',
-   note:'a sake flask and cup on a wooden tray with glazed yakitori'},
-  {file:'sangria-skewers.jpg',    title:'Sangria & Skewers',    place:'For the crowd',
-   note:'a pitcher of sangria poured into two glasses beside a platter of skewers'},
-  {file:'matcha-dorayaki.jpg',    title:'Matcha & Dorayaki',    place:'Zero proof',
-   note:'a matcha latte with a leaf poured into the foam, beside dorayaki pancakes'}
+  {file:'the-toast.jpg',          title:'The Toast',        place:'The welcome pour',
+   note:'two signature cocktails raised in a toast'},
+  {file:'gin-tonic.jpg',          title:'Gin & Tonic',      place:'The copa',
+   note:'a copa of gin and tonic with cucumber and juniper'},
+  {file:'gin-pizza.jpg',          title:'Gin Cooler',       place:'Cocktail hour',
+   note:'two berry and cucumber gin coolers'},
+  {file:'negroni-tataki.jpg',     title:'Negroni',          place:'Before dinner',
+   note:'a negroni with orange peel'},
+  {file:'old-fashioned-nuts.jpg', title:'Old Fashioned',    place:'The slow one',
+   note:'an old fashioned over one large cube'},
+  {file:'highball-karaage.jpg',   title:'Whisky Highball',  place:'Late service',
+   note:'a whisky highball with lemon'},
+  {file:'rum-bao.jpg',            title:'Rum & Mint',       place:'The second act',
+   note:'dark rum with lime and mint'},
+  {file:'sake-yakitori.jpg',      title:'Sake',             place:'The quiet table',
+   note:'a sake flask and cup on a wooden tray'},
+  {file:'sangria-skewers.jpg',    title:'Sangria',          place:'For the crowd',
+   note:'a pitcher of sangria poured into two glasses'},
+  {file:'matcha-dorayaki.jpg',    title:'Matcha Latte',     place:'Zero proof',
+   note:'a matcha latte with a leaf poured into the foam'}
 ];
 PAGES.forEach(p=>{p.url=DIR+p.file;p.alt=p.title+' — '+p.note+'.';});
 const M=PAGES.length, LAND=0;   /* the riffle settles back on The Toast */
@@ -757,7 +874,7 @@ const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ------------------------------------------------ the turning leaf */
 const N=18;            /* strips — enough for a smooth curve          */
-const SPAN=0.449;      /* gutter → outer page edge, as a fraction     */
+const SPAN=0.5;        /* gutter → outer page edge: the art runs edge to edge */
 const BETA=0.60;       /* peak curl of the arc, radians              */
 let idx=0, turn=null;  /* turn = {dir, from, to, t}                   */
 let strips=[];         /* the chain, kept for per-frame lighting       */
@@ -787,7 +904,7 @@ function buildCurl(dir,from,to){
     s.style.setProperty('--i',i);
     const gut='calc(var(--bw) * 0.5)';
     const sw='calc(var(--bw) * '+SPAN+' / '+N+')';
-    /* + var(--mat): the photograph sits inside the page's white margin */
+    /* + var(--mat): the photograph sits inside the page's white border */
     const A='calc(-1 * ('+gut+' + '+i+' * '+sw+') + var(--mat))';  /* the from-page */
     const B='calc('+(i+1)+' * '+sw+' - '+gut+' + var(--mat))';     /* the to-page   */
     const f=el('div','face front'), b=el('div','face back');
@@ -913,20 +1030,18 @@ function tick(now){
 }
 function kick(){ if(raf===null){last=performance.now();raf=requestAnimationFrame(tick);} }
 
-/* ------------------------------------------- tilt + zoom of the book */
+/* ------------------------------------------------ tilt of the book */
 const TILT_X=4.5, TILT_Y=7;      /* degrees — deliberately restrained   */
-const ZOOM_MIN=0.9, ZOOM_MAX=1.5;
-const view={rx:0,ry:0,z:1, trx:0,try_:0,tz:1};
+const view={rx:0,ry:0, trx:0,try_:0};
 let viewActive=false;
 function applyView(){
   sb3d.style.setProperty('--rx',view.rx.toFixed(2)+'deg');
   sb3d.style.setProperty('--ry',view.ry.toFixed(2)+'deg');
-  sb3d.style.setProperty('--zoom',view.z.toFixed(3));
 }
 function viewSpring(){
   const e=0.14;
   let moved=false;
-  for(const [k,t] of [['rx','trx'],['ry','try_'],['z','tz']]){
+  for(const [k,t] of [['rx','trx'],['ry','try_']]){
     const d=view[t]-view[k];
     if(Math.abs(d)>0.0006){view[k]+=d*e;moved=true;}
     else view[k]=view[t];
@@ -935,12 +1050,10 @@ function viewSpring(){
   viewActive=moved;
   return moved;
 }
-function setView(rx,ry,z){
+function setView(rx,ry){
   view.trx=Math.max(-TILT_X,Math.min(TILT_X,rx));
   view.try_=Math.max(-TILT_Y,Math.min(TILT_Y,ry));
-  view.tz=Math.max(ZOOM_MIN,Math.min(ZOOM_MAX,z));
   viewActive=true;kick();
-  if(typeof syncZoom==='function')syncZoom();
 }
 /* the book leans toward the cursor — no dragging, and never far */
 function tiltTo(cx,cy){
@@ -949,17 +1062,14 @@ function tiltTo(cx,cy){
   if(!r.width)return;
   const nx=Math.max(-1,Math.min(1,(cx-(r.left+r.width/2))/(r.width*0.62)));
   const ny=Math.max(-1,Math.min(1,(cy-(r.top+r.height/2))/(r.height*0.9)));
-  setView(-ny*TILT_X, nx*TILT_Y, view.tz);
+  setView(-ny*TILT_X, nx*TILT_Y);
 }
 addEventListener('pointermove',e=>{
   if(e.pointerType==='touch')return;
   tiltTo(e.clientX,e.clientY);
 },{passive:true});
-addEventListener('pointerout',e=>{if(!e.relatedTarget)setView(0,0,view.tz)});
-addEventListener('blur',()=>setView(0,0,view.tz));
-/* the wheel belongs to the page — zoom is on the toolbar, or a double click
-   to come back to 100% */
-stage.addEventListener('dblclick',()=>setView(view.trx,view.try_,1));
+addEventListener('pointerout',e=>{if(!e.relatedTarget)setView(0,0)});
+addEventListener('blur',()=>setView(0,0));
 
 /* ------------------------------------------------------- pointer work */
 let drag=null;
@@ -1054,17 +1164,7 @@ document.getElementById('heroDown').onclick=()=>{
 };
 
 /* --------------------------------------------------------- the controls */
-const zRead=document.getElementById('zRead');
-const zInBtn=document.getElementById('zIn'), zOutBtn=document.getElementById('zOut');
 const plateCount=document.getElementById('plateCount');
-
-function syncZoom(){
-  zRead.textContent=Math.round(view.tz*100)+'%';
-  zOutBtn.disabled=view.tz<=ZOOM_MIN+0.001;
-  zInBtn.disabled=view.tz>=ZOOM_MAX-0.001;
-}
-zInBtn.onclick=()=>{setView(view.trx,view.try_,view.tz*1.16);hideHint();};
-zOutBtn.onclick=()=>{setView(view.trx,view.try_,view.tz/1.16);hideHint();};
 
 /* ------------------------------------------------------------ the FAQ
    One answer open at a time.  The panel is a grid row animating from 0fr
@@ -1078,22 +1178,40 @@ document.querySelector('.qa-list').addEventListener('click',e=>{
   b.setAttribute('aria-expanded',String(!open));
 });
 
-/* --------------------------------------------------------- the index */
-const plateList=document.getElementById('plateList');
-PAGES.forEach((p,i)=>{
-  const li=el('li');
-  const b=el('button','plate');
-  b.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span>'+
-              '<span class="t"></span><span class="p"></span>';
-  b.querySelector('.t').textContent=p.title;
-  b.querySelector('.p').textContent=p.place;
-  b.onclick=()=>{goTo(i);document.getElementById('sketchbook').scrollIntoView({behavior:'smooth',block:'center'});};
-  li.appendChild(b);plateList.appendChild(li);
+/* ------------------------------------------------------- the booking form
+   Posts to Formspree with fetch so the page never reloads.  On success the
+   form is replaced by the thank-you line; on failure it stays put, so
+   nothing the guest typed is lost. */
+const bookForm=document.getElementById('bookForm');
+const bookStatus=document.getElementById('bookStatus');
+const bookDate=document.getElementById('bf-date');
+{ /* no event dates in the past */
+  const d=new Date(), p=n=>String(n).padStart(2,'0');
+  bookDate.min=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
+}
+bookForm.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=bookForm.querySelector('.form-btn');
+  btn.disabled=true;bookStatus.textContent='';
+  try{
+    const r=await fetch(bookForm.action,{
+      method:'POST',body:new FormData(bookForm),headers:{Accept:'application/json'}
+    });
+    if(!r.ok)throw new Error(r.status);
+    const ok=el('p','bio bio-lead form-thanks');
+    ok.setAttribute('role','status');
+    ok.textContent="Thank you. We'll send your proposal within 48 hours.";
+    bookForm.replaceWith(ok);
+  }catch(err){
+    bookStatus.textContent='Something went wrong. Email us at hello@vibzbar.com.';
+    btn.disabled=false;
+  }
 });
+
+/* --------------------------------------------------------- the counter */
 function marks(){
   const cur=turn?turn.to:idx;
   plateCount.innerHTML='<b>'+String(cur+1).padStart(2,'0')+'</b> / '+String(M).padStart(2,'0');
-  plateList.querySelectorAll('.plate').forEach((b,i)=>b.setAttribute('aria-current',i===cur?'true':'false'));
 }
 
 /* ---------------------------------------------------------- the riffle */
@@ -1147,7 +1265,6 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)abortIntro(
     return im.decode?im.decode().catch(()=>{}):new Promise(r=>{im.onload=im.onerror=r});
   }));
   if(document.fonts&&document.fonts.ready)await document.fonts.ready.catch(()=>{});
-  syncZoom();
   document.body.dataset.ready='1';
   if(Q.has('shot')){
     if(Q.has('t')){startTurn(Q.get('dir')||'next',parseFloat(Q.get('t')));}
