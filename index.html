@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIBZ — Mobile Bar</title>
+<meta name="description" content="luxury mobile bartending — El Dorado Hills &amp; greater Sacramento">
+<meta property="og:title" content="VIBZ — Mobile Bar">
+<meta property="og:description" content="Cocktails worth staying for. Luxury mobile bartending for El Dorado Hills, Sacramento, and everywhere worth celebrating.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#ece7dc">
+<style>
+@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:block;
+  src:url(sketchbook/instrument-serif.woff2) format('woff2')}
+@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:block;
+  src:url(sketchbook/instrument-serif-italic.woff2) format('woff2')}
+@font-face{font-family:'Newsreader';font-style:normal;font-weight:200 600;font-display:swap;
+  src:url(sketchbook/newsreader.woff2) format('woff2')}
+
+:root{
+  --paper:#ece7dc;
+  --ink:#2b2721;
+  --ink-soft:rgba(43,39,33,.58);
+  --ink-faint:rgba(43,39,33,.36);
+  --hairline:rgba(43,39,33,.14);
+  --earth:#9a6a3e;
+  --display:'Instrument Serif',"New York",Georgia,'Times New Roman',serif;
+  --font:'Newsreader',"New York",Georgia,'Times New Roman',serif;
+  --track-caps:.24em;
+  --track-nav:.06em;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font);font-weight:400;background:var(--paper);color:var(--ink);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+::selection{background:rgba(43,39,33,.85);color:var(--paper)}
+
+/* the painted ground the whole page sits on */
+.wash{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(62% 44% at 16% 6%,rgba(214,211,226,.50) 0%,rgba(214,211,226,0) 62%),
+    radial-gradient(50% 38% at 88% 18%,rgba(154,106,62,.13) 0%,rgba(154,106,62,0) 66%),
+    radial-gradient(72% 52% at 60% 84%,rgba(199,190,170,.36) 0%,rgba(199,190,170,0) 68%),
+    linear-gradient(168deg,#f5f1e7 0%,#f0ebdf 44%,var(--paper) 100%);
+}
+.wash:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(236,231,220,.10) 0%,rgba(236,231,220,.58) 58%,var(--paper) 90%);
+}
+
+/* ---------------- top bar ---------------- */
+.top{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;flex-direction:column;align-items:center;gap:11px;
+  padding-inline:clamp(16px,4vw,48px);padding-block:18px 64px;pointer-events:none;text-align:center;
+}
+.top>*{pointer-events:auto}
+.top:before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(240,236,226,.94),rgba(240,236,226,.7) 48%,rgba(240,236,226,0));
+  -webkit-backdrop-filter:blur(14px) saturate(.95);backdrop-filter:blur(14px) saturate(.95);
+  -webkit-mask-image:linear-gradient(180deg,#000 46%,transparent);
+  mask-image:linear-gradient(180deg,#000 46%,transparent);
+}
+.top .name{display:block;line-height:0}
+.top .name img{width:clamp(124px,15vw,186px);height:auto;display:block}
+.top nav{
+  display:flex;gap:clamp(14px,2vw,26px);font-size:15px;align-items:center;
+  letter-spacing:var(--track-nav);font-weight:300;
+}
+.top nav a{color:var(--ink-soft);transition:color .2s}
+.top nav a:hover,.top nav a[aria-current]{color:var(--ink)}
+.top nav .top-socials{
+  display:flex;align-items:center;gap:13px;margin-left:2px;padding-left:clamp(12px,1.6vw,20px);
+  border-left:1px solid var(--hairline);
+}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;padding:4px;color:var(--ink-soft);transition:color .2s}
+.icon-btn:hover{color:var(--ink)}
+.top .icon-btn svg{width:16px;height:16px;display:block}
+@media (max-width:640px){
+  .top{padding-inline:12px;padding-block:13px 50px;gap:8px}
+  .top .name img{width:108px}
+  .top nav{gap:11px;font-size:13px}
+  .top nav .top-socials{gap:9px;padding-left:10px}
+  .top .icon-btn{padding:2px}
+  .top .icon-btn svg{width:14px;height:14px}
+}
+
+/* ---------------- hero ---------------- */
+.hero{
+  position:relative;display:grid;justify-items:center;align-content:center;
+  min-height:100svh;overflow-anchor:none;
+  padding:clamp(112px,13svh,152px) 0 clamp(72px,10svh,120px);
+}
+.botany{
+  position:absolute;bottom:0;width:clamp(120px,15vw,250px);opacity:.5;
+  pointer-events:none;user-select:none;z-index:0;
+}
+.botany.l{left:clamp(-40px,-1vw,0px);bottom:2%}
+.botany.r{right:clamp(-30px,0vw,10px);bottom:-2%;width:clamp(100px,12vw,200px)}
+@media (max-width:900px){.botany{display:none}}
+
+.hero-kicker{
+  font-size:12px;font-weight:400;letter-spacing:var(--track-caps);text-align:center;
+  color:var(--ink-soft);margin:0 0 clamp(22px,3.4vh,40px);text-transform:uppercase;
+}
+.hero-down{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);border:0;background:transparent;
+  padding:10px 14px;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent;
+  animation:cue-breathe 2.6s ease-in-out infinite;z-index:3;
+}
+.hero-down:hover{animation:none;opacity:1}
+@keyframes cue-breathe{0%,100%{opacity:.15}50%{opacity:.7}}
+@media (prefers-reduced-motion:reduce){.hero-down{animation:none;opacity:.5}}
+
+/* ---------------- sketchbook ---------------- */
+.hero,.hero *{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+.hero img{-webkit-user-drag:none;user-drag:none}
+.sb-wrap{display:grid;justify-items:center;gap:20px;width:100%;position:relative;z-index:2}
+.sb-stage{
+  display:flex;align-items:center;justify-content:center;width:100%;
+  position:relative;
+  touch-action:pan-y;
+}
+.sb-arrow{
+  flex:none;display:inline-flex;align-items:center;justify-content:center;padding:10px 8px;
+  border:0;background:transparent;color:var(--ink-soft);cursor:pointer;transition:color .2s;
+  -webkit-tap-highlight-color:transparent;z-index:8;
+}
+.sb-arrow:hover{color:var(--ink)}
+
+/* the book's own untransformed frame; only .sb-tilt leans underneath */
+.sb-3d{
+  position:relative;flex:1 1;min-width:0;max-width:900px;
+  perspective:1750px;perspective-origin:50% 46%;
+  --mat:calc(var(--bw,0px) * .016);   /* the white margin around the plate */
+  --mat-paper:#fdfcfa;                /* not pure white -- stock, not screen */
+  --tex:calc(var(--bw,0px) * .085);   /* grain tile, scaled to the book */
+}
+.sb-tilt{
+  position:relative;
+  transform-style:preserve-3d;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
+  will-change:transform;
+}
+/* The plate is matted: a white margin of --mat on all four sides, with the
+   photograph filling what is left.  The book is therefore taller than the
+   photograph -- 1 / ((1 - 2m)/1.792 + 2m) with m = .016 -- and every surface
+   that paints the photo has to inset it by the same amount. */
+.sb-book{
+  position:relative;width:100%;aspect-ratio:1.7477;
+  transform-style:preserve-3d;z-index:1;
+}
+/* the crease lives on the book, not on the settled page, so it no longer
+   pops out of existence the moment a leaf lifts */
+.sb-book:after{
+  content:"";position:absolute;top:var(--mat);bottom:var(--mat);left:50%;
+  width:calc(var(--bw,0px) * .105);transform:translateX(-50%);
+  pointer-events:none;z-index:5;
+  background:linear-gradient(90deg,
+    rgba(52,38,20,0) 0%,rgba(52,38,20,.05) 32%,rgba(52,38,20,.125) 50%,
+    rgba(52,38,20,.05) 68%,rgba(52,38,20,0) 100%);
+  opacity:calc(1 - var(--shade,0));
+}
+
+/* The book sits on a surface, so its shadow is a soft pool underneath —
+   no box, no filter on the artwork, nothing with an edge of its own.
+   Both blobs fade to zero well inside their own bounds, and both ease
+   off while a leaf is in the air. */
+.sb-cast{position:absolute;pointer-events:none;z-index:0}
+.sb-cast.ambient{
+  left:-1%;right:-1%;top:6%;bottom:-8%;
+  background:radial-gradient(50% 50% at 50% 58%,
+    rgba(58,44,26,.34) 0%,rgba(58,44,26,.19) 40%,rgba(58,44,26,0) 74%);
+  filter:blur(26px);
+  opacity:calc(1 - var(--shade,0) * .42);
+}
+.sb-cast.contact{
+  left:4%;right:4%;top:56%;bottom:-4%;
+  background:radial-gradient(50% 44% at 50% 42%,
+    rgba(44,32,14,.40) 0%,rgba(44,32,14,.17) 48%,rgba(44,32,14,0) 78%);
+  filter:blur(11px);
+  opacity:calc(1 - var(--shade,0) * .5);
+}
+.sb-cast.hair{
+  left:8%;right:8%;top:74%;bottom:2%;
+  background:radial-gradient(50% 52% at 50% 40%,
+    rgba(40,28,10,.34) 0%,rgba(40,28,10,0) 76%);
+  filter:blur(4px);
+  opacity:calc(1 - var(--shade,0) * .62);
+}
+.sb-full{position:absolute;inset:0;background:var(--mat-paper);overflow:hidden}
+.sb-full img{
+  position:absolute;top:var(--mat);left:var(--mat);
+  width:calc(100% - 2 * var(--mat));height:auto;display:block;
+}
+/* The two halves either side of the gutter.  Each shows the full-width
+   photograph through a half-width window, so the image is positioned in
+   book pixels and the margin is carried on both. */
+.sb-half{position:absolute;top:0;bottom:0;width:50%;overflow:hidden;background:var(--mat-paper)}
+.sb-half.left{left:0}
+.sb-half.right{left:50%}
+.sb-half-img{
+  position:absolute;top:var(--mat);
+  width:calc(var(--bw,0px) - 2 * var(--mat));max-width:none;height:auto;display:block;
+}
+.sb-half.left .sb-half-img{left:var(--mat)}
+.sb-half.right .sb-half-img{left:calc(var(--mat) - var(--bw,0px) / 2)}
+
+/* the shadow the lifting leaf throws onto the page beneath it */
+.gutter-shade{
+  position:absolute;top:0;bottom:0;width:46%;
+  pointer-events:none;opacity:calc(var(--shade,0) * .62);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+}
+.gutter-shade.left{right:0;background:linear-gradient(270deg,rgba(52,38,20,.30),rgba(52,38,20,0) 82%)}
+.gutter-shade.right{left:0;background:linear-gradient(90deg,rgba(52,38,20,.24),rgba(52,38,20,0) 82%)}
+
+/* Matte magazine stock: a seamless tooth over every paper surface, so it
+   bends with the leaf instead of floating above it, plus one broad sheen on
+   the flat frame above -- the varnish catching the room. */
+.sb-full:after,.sb-half:after,.face:after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:9;
+  background-image:url(data:image/png;base64,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);
+  background-size:var(--tex) var(--tex);
+  opacity:.62;
+}
+.sb-3d:after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:30;
+  background:linear-gradient(104deg,
+    rgba(255,255,255,0) 10%,rgba(255,255,255,.15) 26%,rgba(255,255,255,0) 43%,
+    rgba(255,255,255,0) 71%,rgba(255,255,255,.09) 85%,rgba(255,255,255,0) 97%);
+}
+
+/* ---- the turning leaf: nested strips forming a curved surface ---- */
+.curl{
+  position:absolute;top:0;height:100%;
+  width:calc(var(--bw,0px) * var(--span));
+  transform-style:preserve-3d;z-index:6;
+}
+.curl.next{left:50%;transform-origin:left center;transform:rotateY(calc(-1 * var(--tt,0deg)))}
+.curl.prev{right:50%;transform-origin:right center;transform:rotateY(var(--tt,0deg))}
+.strip{
+  position:absolute;top:0;height:100%;
+  width:calc(var(--bw,0px) * var(--span) / var(--n));
+  transform-style:preserve-3d;
+}
+.curl.next .strip{transform-origin:left center}
+.curl.prev .strip{transform-origin:right center}
+.curl.next>.strip{left:0}
+.curl.prev>.strip{right:0;left:auto}
+.curl.next .strip .strip{left:100%;transform:rotateY(var(--td,0deg))}
+.curl.prev .strip .strip{right:100%;transform:rotateY(calc(-1 * var(--td,0deg)))}
+.face{
+  position:absolute;top:0;bottom:0;left:0;right:-1.1px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background-color:var(--mat-paper);
+  background-repeat:no-repeat;
+  background-size:calc(var(--bw,0px) - 2 * var(--mat)) auto;
+  background-position-y:var(--mat);
+}
+.face.back{transform:rotateY(180deg)}
+.face .sh,.face .gl{
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 100%);
+  mask-image:linear-gradient(180deg,#000 0,#000 100%);
+}
+.strip.edge .face .sh,.strip.edge .face .gl{
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 100%),var(--hf);
+  mask-image:linear-gradient(180deg,#000 0,#000 100%),var(--hf);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+.curl.next .strip.edge .face.front,.curl.prev .strip.edge .face.back{
+  --hf:linear-gradient(90deg,#000 0 22%,transparent 96%);
+}
+.curl.next .strip.edge .face.back,.curl.prev .strip.edge .face.front{
+  --hf:linear-gradient(270deg,#000 0 22%,transparent 96%);
+}
+.face .sh{position:absolute;inset:0;pointer-events:none}
+.curl.next .face.front .sh,.curl.prev .face.back .sh{
+  background:linear-gradient(90deg,rgba(58,43,20,var(--a1,0)),rgba(58,43,20,var(--a2,0)));
+}
+.curl.next .face.back .sh,.curl.prev .face.front .sh{
+  background:linear-gradient(90deg,rgba(58,43,20,var(--a2,0)),rgba(58,43,20,var(--a1,0)));
+}
+.face .gl{
+  position:absolute;inset:0;
+  pointer-events:none;background:#fffaf0;
+  opacity:calc(var(--shade,0) * var(--lit,1) * var(--lit,1) * .20);
+}
+
+/* ---- controls ---- */
+.sb-tools{
+  display:flex;align-items:center;gap:6px;
+  border:1px solid var(--hairline);border-radius:999px;
+  padding:5px 7px;background:rgba(250,246,238,.62);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+.tool{
+  width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;
+  border:0;border-radius:50%;background:transparent;color:var(--ink-soft);
+  cursor:pointer;transition:background-color .18s ease,color .18s ease;
+}
+.tool:hover{background:rgba(255,252,244,.9);color:var(--ink)}
+.tool[aria-pressed="true"]{background:rgba(154,106,62,.16);color:var(--earth)}
+.tool:disabled{opacity:.32;cursor:default;background:transparent}
+.tool svg{width:15px;height:15px;display:block}
+.tool-sep{width:1px;height:17px;background:var(--hairline);margin:0 2px}
+.plate-count{
+  font-size:11px;letter-spacing:.1em;color:var(--ink-faint);
+  font-variant-numeric:tabular-nums;padding:0 6px;white-space:nowrap;
+}
+.plate-count b{font-weight:400;color:var(--ink)}
+.zoom-read{
+  font-size:11px;letter-spacing:.1em;color:var(--ink-faint);
+  min-width:40px;text-align:center;font-variant-numeric:tabular-nums;
+}
+
+.sb-zone{position:absolute;top:0;bottom:0;border:0;background:transparent;cursor:grab;z-index:60;-webkit-tap-highlight-color:transparent}
+.sb-zone:active{cursor:grabbing}
+.sb-prev{left:0;width:50%}
+.sb-next{right:0;width:50%}
+
+.sb-captions{display:grid;justify-items:center}
+.sb-captions>*{grid-area:1/1;margin:0}
+.sb-caption{font-size:13px;letter-spacing:var(--track-caps);text-transform:uppercase;color:var(--ink-soft);
+  animation:sb-cap-in .5s ease both}
+.sb-caption.live{animation:none}
+@keyframes sb-cap-in{0%{opacity:0}}
+@keyframes sb-cap-out{to{opacity:0}}
+.sb-hint{
+  margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  transition:opacity .4s ease;
+}
+.sb-hint.gone{opacity:0}
+.sb-wrap.intro .sb-full img,.sb-wrap.intro .sb-half-img{filter:url(#sb-mblur-1)}
+.sb-wrap.intro.b2 .sb-full img,.sb-wrap.intro.b2 .sb-half-img{filter:url(#sb-mblur-2)}
+.sb-wrap.intro .sb-caption{animation:none}
+.sb-wrap.intro .sb-caption.cap-out{display:none}
+@media (max-width:640px){
+  .hero-kicker{font-size:10.5px;letter-spacing:.16em}
+  .sb-wrap{width:100vw;margin-inline:calc(50% - 50vw)}
+  .sb-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:70;padding:12px 6px}
+  .sb-arrow.left{left:2px}
+  .sb-arrow.right{right:2px}
+  .sb-3d{max-width:none}
+  .sb-hint{font-size:9.5px;letter-spacing:.1em;padding:0 16px;text-align:center}
+}
+
+/* ---------------- painted rules + sections ---------------- */
+.rule{
+  display:block;width:min(1080px,86vw);margin:clamp(30px,6vh,64px) auto;
+  height:clamp(26px,4vw,46px);
+  background:url(vibz/divider.svg) center / 100% auto no-repeat;
+  opacity:.5;
+}
+.rule.short{width:min(420px,52vw);opacity:.4}
+.section-label{
+  font-size:11px;letter-spacing:var(--track-caps);text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 18px;
+}
+.about{
+  position:relative;max-width:1080px;margin:0 auto;
+  padding:0 clamp(20px,5vw,48px);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,60px);align-items:start;
+}
+.bio{font-size:clamp(17px,1.7vw,20px);line-height:1.74;letter-spacing:.005em;margin:0;font-weight:300;max-width:56ch}
+.bio-link{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(26,35,50,.28);
+  text-underline-offset:4px;transition:text-decoration-color .2s}
+.bio-link:hover{text-decoration-color:var(--ink)}
+.bloom{width:clamp(150px,17vw,260px);opacity:.9;user-select:none;align-self:center}
+@media (max-width:760px){
+  .about{grid-template-columns:1fr}
+  .bloom{width:170px;justify-self:center}
+}
+
+.contact{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,48px)}
+.contact-social{
+  margin:20px 0 0;display:flex;flex-wrap:wrap;gap:22px;
+  font-size:12px;letter-spacing:var(--track-caps);text-transform:uppercase;
+}
+.about .bio + .bio{margin-top:1.1em}
+
+.plates{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,48px)}
+.plate-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairline)}
+.plate{
+  display:grid;grid-template-columns:3.4em minmax(0,1fr) auto;gap:18px;align-items:baseline;
+  width:100%;padding:15px 4px;border:0;border-bottom:1px solid var(--hairline);
+  background:transparent;text-align:left;cursor:pointer;color:inherit;
+  transition:background-color .22s ease,padding-left .22s ease;
+}
+.plate:hover,.plate[aria-current="true"]{background:rgba(255,252,244,.5);padding-left:12px}
+.plate .n{font-size:12px;color:var(--ink-faint);letter-spacing:var(--track-nav)}
+.plate .t{font-family:var(--display);font-size:clamp(19px,2.1vw,26px)}
+.plate .p{font-size:12.5px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;text-align:right}
+.plate[aria-current="true"] .p{color:var(--earth)}
+
+/* ---- the sections VIBZ needs that a sketchbook did not: steps, tiers
+        and questions.  All of it borrows the plate list's manners --
+        hairline rules, an indented number, the same restrained scale. ---- */
+/* the fixed bar would otherwise sit on top of a section's own label */
+.about,.plates,.contact{scroll-margin-top:clamp(96px,13vh,132px)}
+
+.lede{
+  font-family:var(--display);font-size:clamp(24px,3vw,38px);line-height:1.18;
+  letter-spacing:.005em;margin:0 0 clamp(20px,3vh,34px);max-width:22ch;
+}
+.bio-lead{font-family:var(--display);font-size:clamp(23px,2.7vw,34px);line-height:1.2;
+  font-weight:400;letter-spacing:.005em;max-width:20ch;margin-bottom:.5em}
+.bio-note{font-size:clamp(14px,1.4vw,16px);color:var(--ink-soft);max-width:64ch}
+.bio-rule{
+  margin-top:1.5em;padding-top:1.2em;border-top:1px solid var(--hairline);
+  font-family:var(--display);font-size:clamp(19px,2vw,25px);line-height:1.3;max-width:24ch;
+}
+
+.step-list,.tier-list,.qa-list{list-style:none;margin:0;padding:0}
+.step-list{border-top:1px solid var(--hairline)}
+.step{
+  display:grid;grid-template-columns:3.4em minmax(0,1fr);gap:18px;align-items:baseline;
+  padding:20px 4px;border-bottom:1px solid var(--hairline);
+}
+.step .n{font-size:12px;color:var(--ink-faint);letter-spacing:var(--track-nav)}
+.step h3{font-family:var(--display);font-weight:400;font-size:clamp(19px,2.1vw,26px);margin:0 0 .3em}
+.step p{margin:0;font-size:clamp(15px,1.5vw,17px);line-height:1.6;color:var(--ink-soft);max-width:52ch}
+
+.tier-list{display:grid;gap:0;border-top:1px solid var(--hairline)}
+.tier{padding:26px 4px;border-bottom:1px solid var(--hairline)}
+.tier.featured{background:rgba(255,252,244,.5);padding-inline:18px}
+.tier-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.6em 1.2em;margin-bottom:.9em}
+.tier-head h3{font-family:var(--display);font-weight:400;font-size:clamp(22px,2.5vw,30px);margin:0}
+.tier-price{font-size:12.5px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;
+  margin-left:auto;white-space:nowrap}
+.tier.featured .tier-price{color:var(--earth)}
+.tier-badge{
+  font-family:var(--font);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--earth);border:1px solid currentColor;padding:.28em .6em;vertical-align:.32em;
+  margin-left:.5em;white-space:nowrap;
+}
+.tier ul{list-style:none;margin:0;padding:0;max-width:56ch}
+.tier ul li{position:relative;padding-left:1.1em;font-size:clamp(15px,1.5vw,17px);
+  line-height:1.62;color:var(--ink-soft)}
+.tier ul li+li{margin-top:.35em}
+.tier ul li:before{content:"";position:absolute;left:0;top:.72em;width:.5em;height:1px;
+  background:var(--earth);opacity:.7}
+.tier-best{margin:1em 0 0;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-faint)}
+
+.qa-list{border-top:1px solid var(--hairline)}
+.qa{border-bottom:1px solid var(--hairline)}
+.qa button{
+  display:flex;align-items:center;gap:.9em;width:100%;padding:19px 4px;
+  border:0;background:transparent;cursor:pointer;text-align:left;color:inherit;
+  font-family:var(--display);font-size:clamp(18px,2vw,24px);font-weight:400;line-height:1.3;
+  -webkit-tap-highlight-color:transparent;transition:padding-left .22s ease;
+}
+.qa button:hover{padding-left:12px}
+.qa .q{flex:1}
+.qa .caret{
+  flex:none;width:.5em;height:.5em;border-right:1.4px solid var(--earth);
+  border-bottom:1.4px solid var(--earth);transform:rotate(45deg) translate(-.08em,-.08em);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.qa button[aria-expanded="true"] .caret{transform:rotate(-135deg) translate(-.14em,-.14em)}
+.qa .a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .34s cubic-bezier(.4,0,.2,1)}
+.qa button[aria-expanded="true"]+.a{grid-template-rows:1fr}
+.qa .a>div{overflow:hidden}
+.qa .a p{margin:0;padding:0 2em 22px 4px;font-size:clamp(15px,1.5vw,17px);
+  line-height:1.7;color:var(--ink-soft);max-width:64ch}
+@media (prefers-reduced-motion:reduce){.qa .a{transition:none}}
+
+@media (max-width:640px){
+  .step{grid-template-columns:2.6em minmax(0,1fr);gap:12px;padding:17px 2px}
+  .tier.featured{padding-inline:12px}
+  .tier-price{margin-left:0}
+}
+
+.foot{font-size:11.5px;letter-spacing:var(--track-caps);text-transform:uppercase;
+  color:var(--ink-faint);text-align:center;margin-top:clamp(48px,7vh,84px);padding-bottom:14px}
+.foot.legal{
+  margin-top:12px;padding-bottom:44px;text-transform:none;letter-spacing:.01em;
+  font-size:12px;line-height:1.6;max-width:52ch;margin-inline:auto;padding-inline:20px;
+  opacity:.72;
+}
+</style>
+</head>
+<body>
+<div class="wash" aria-hidden="true"></div>
+<main class="page home">
+
+  <header class="top">
+    <a class="name" href="#" aria-label="VIBZ Mobile Bar — home">
+      <img src="vibz/wordmark-navy.png" alt="VIBZ Mobile Bar" width="980" height="167">
+    </a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#experiences">Experiences</a>
+      <a href="#plates">Pairings</a>
+      <a href="#contact">Book</a>
+      <div class="top-socials">
+        <a href="https://www.instagram.com/vibzbar" target="_blank" rel="me noopener" class="icon-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+        <a href="tel:+19165550134" class="icon-btn" aria-label="Phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6.2 3.4h3.1l1.6 4-2 1.3a12 12 0 0 0 5.4 5.4l1.3-2 4 1.6v3.1a1.8 1.8 0 0 1-2 1.8A15.6 15.6 0 0 1 4.4 5.4a1.8 1.8 0 0 1 1.8-2Z"/></svg></a>
+        <a href="mailto:hello@vibzbar.com" class="icon-btn" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.4" y="4.6" width="19.2" height="14.8" rx="2.4"/><path d="m3.2 6.4 8.8 6.6 8.8-6.6"/></svg></a>
+      </div>
+    </nav>
+  </header>
+
+  <section id="sketchbook" class="hero">
+    <img class="botany l" src="vibz/botany-left.svg" alt="" aria-hidden="true">
+    <img class="botany r" src="vibz/botany-right.svg" alt="" aria-hidden="true">
+
+    <p class="hero-kicker">Mix · Sip · Unwind / Luxury Mobile Bartending @ El Dorado Hills</p>
+
+    <div class="sb-wrap" id="sbWrap">
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <filter id="sb-mblur-1"><feGaussianBlur stdDeviation="5 0"/></filter>
+        <filter id="sb-mblur-2"><feGaussianBlur stdDeviation="14 0"/></filter>
+      </svg>
+      <div class="sb-stage" id="sbStage">
+        <button class="sb-arrow left" id="sbLeft" aria-label="previous page">
+          <svg viewBox="0 0 14 44" width="14" height="44" fill="none" aria-hidden="true"><polyline points="11,3 3,22 11,41" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="sb-3d" id="sb3d">
+          <div class="sb-tilt" id="sbTilt">
+            <div class="sb-cast ambient" aria-hidden="true"></div>
+            <div class="sb-cast contact" aria-hidden="true"></div>
+            <div class="sb-cast hair" aria-hidden="true"></div>
+            <div class="sb-book" id="sbBook"></div>
+          </div>
+        </div>
+        <button class="sb-arrow right" id="sbRight" aria-label="next page">
+          <svg viewBox="0 0 14 44" width="14" height="44" fill="none" aria-hidden="true"><polyline points="3,3 11,22 3,41" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="sb-captions" id="sbCaptions"></div>
+      <div class="sb-tools" role="group" aria-label="view controls">
+        <button class="tool" id="zOut" aria-label="zoom out"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8.6" cy="8.6" r="5.6"/><path d="M12.8 12.8 17.4 17.4M6.2 8.6h4.8"/></svg></button>
+        <span class="zoom-read" id="zRead">100%</span>
+        <button class="tool" id="zIn" aria-label="zoom in"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8.6" cy="8.6" r="5.6"/><path d="M12.8 12.8 17.4 17.4M6.2 8.6h4.8M8.6 6.2v4.8"/></svg></button>
+        <span class="tool-sep" aria-hidden="true"></span>
+        <span class="plate-count" id="plateCount" aria-live="polite">01 / 12</span>
+      </div>
+      <p class="sb-hint" id="sbHint">Drag the page to turn · Twelve plates</p>
+    </div>
+
+    <button class="hero-down" id="heroDown" aria-label="scroll to about">
+      <svg viewBox="0 0 44 22" width="34" height="17" fill="none" aria-hidden="true">
+        <polyline points="3,3 22,11 41,3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="3,11 22,19 41,11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </section>
+
+  <div class="rule" aria-hidden="true"></div>
+
+  <section id="about" class="about">
+    <div>
+      <p class="section-label">What we are</p>
+      <p class="bio bio-lead">Not a bar. An experience that happens to have one.</p>
+      <p class="bio">Anyone can pour. We design the hour. A styled bar that belongs in your space. Real glassware, never plastic. Syrups made from scratch. Garnishes you'll photograph before you drink.</p>
+      <p class="bio">And a surprise in every glass — one detail we don't tell you about until your guests find it. We arrive early. We leave it spotless. You never touch a thing.</p>
+      <p class="bio bio-rule">You choose the bottles. We build the night around them.</p>
+    </div>
+    <img class="bloom" src="vibz/bloom.svg" alt="" aria-hidden="true">
+  </section>
+
+  <div class="rule short" aria-hidden="true"></div>
+
+  <section id="how" class="plates">
+    <p class="section-label">How it works</p>
+    <p class="lede">Four steps. That's the whole thing.</p>
+    <ol class="step-list">
+      <li class="step">
+        <span class="n">01</span>
+        <div><h3>Tell us about the night</h3><p>Date, headcount, address, vibe. Two minutes.</p></div>
+      </li>
+      <li class="step">
+        <span class="n">02</span>
+        <div><h3>We design the menu</h3><p>Signature cocktails built around your event. You approve every one.</p></div>
+      </li>
+      <li class="step">
+        <span class="n">03</span>
+        <div><h3>You shop, we guide</h3><p>We send you an exact list — brands, bottles, quantities. You buy it. You own it.</p></div>
+      </li>
+      <li class="step">
+        <span class="n">04</span>
+        <div><h3>We handle the rest</h3><p>Setup, service, breakdown. You're a guest at your own party.</p></div>
+      </li>
+    </ol>
+  </section>
+
+  <div class="rule short" aria-hidden="true"></div>
+
+  <section id="experiences" class="plates">
+    <p class="section-label">The experiences</p>
+    <p class="lede">Three ways to do this.</p>
+    <p class="bio bio-note">Every package includes a styled bar, real glassware, house-made syrups, fresh garnishes, ice, mixers, full setup and breakdown, and a licensed, RBS-certified, fully insured team. Four hours of service.</p>
+    <ol class="tier-list">
+      <li class="tier">
+        <div class="tier-head">
+          <h3>The Classic</h3>
+          <span class="tier-price">From $950</span>
+        </div>
+        <ul>
+          <li>Two signature cocktails, designed for your event. Classics on request.</li>
+          <li>Styled bar. Real glassware. House syrups and fresh garnishes.</li>
+          <li>Setup and breakdown included.</li>
+        </ul>
+        <p class="tier-best">Best for intimate dinners, milestone birthdays, cocktail hours under 50.</p>
+      </li>
+      <li class="tier featured">
+        <div class="tier-head">
+          <h3>The Signature <span class="tier-badge">most requested</span></h3>
+          <span class="tier-price">From $1,350</span>
+        </div>
+        <ul>
+          <li>Everything in The Classic, plus a third signature cocktail.</li>
+          <li>A full zero-proof program — because not everyone is drinking, and they shouldn't be handed a soda.</li>
+          <li>A custom-designed menu with your names on it.</li>
+          <li>The surprise garnish.</li>
+        </ul>
+        <p class="tier-best">Best for weddings, engagement parties, anything with a guest list you're proud of.</p>
+      </li>
+      <li class="tier">
+        <div class="tier-head">
+          <h3>The Full Experience</h3>
+          <span class="tier-price">From $1,850</span>
+        </div>
+        <ul>
+          <li>Everything in The Signature, plus a fourth signature cocktail.</li>
+          <li>Custom clear ice — hand-cut, crystal, stamped if you'd like.</li>
+          <li>A welcome pour placed in every guest's hand on arrival.</li>
+          <li>Upgraded glassware, and full bar styling designed to your palette.</li>
+        </ul>
+        <p class="tier-best">Best for the event people talk about next year.</p>
+      </li>
+    </ol>
+  </section>
+
+  <div class="rule short" aria-hidden="true"></div>
+
+  <section id="plates" class="plates">
+    <p class="section-label">The pairings</p>
+    <p class="lede">Twelve plates. Pick one and the book turns to it.</p>
+    <ol class="plate-list" id="plateList"></ol>
+  </section>
+
+  <div class="rule short" aria-hidden="true"></div>
+
+  <section id="questions" class="plates">
+    <p class="section-label">Questions</p>
+    <p class="lede">Answered.</p>
+    <ol class="qa-list">
+      <li class="qa">
+        <button type="button" aria-expanded="false"><span class="q">Do you provide the alcohol?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a"><div><p>No — and that's deliberate. California law makes host-supplied alcohol the cleanest way to do this. You buy it, you own it, you keep what's left. We send you an exact shopping list so it's effortless.</p></div></div>
+      </li>
+      <li class="qa">
+        <button type="button" aria-expanded="false"><span class="q">How much alcohol do I actually need?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a"><div><p>We'll tell you precisely. Our planning tool works from your guest count, service length, and menu — down to the bottle.</p></div></div>
+      </li>
+      <li class="qa">
+        <button type="button" aria-expanded="false"><span class="q">How far do you travel?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a"><div><p>25 miles from El Dorado Hills is included. Beyond that, $3/mile. Tahoe, Napa, and the Bay Area are quoted individually — and we love those events.</p></div></div>
+      </li>
+      <li class="qa">
+        <button type="button" aria-expanded="false"><span class="q">How many bartenders will I have?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a"><div><p>One per 50 guests as standard, more when the menu or timeline calls for it. We'll tell you what your night needs, not what's cheapest.</p></div></div>
+      </li>
+      <li class="qa">
+        <button type="button" aria-expanded="false"><span class="q">What do you need from my venue?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a"><div><p>6–8 feet behind the bar, 3–4 feet of clearance in front, and a flat surface. That's it. No power required unless we've discussed it.</p></div></div>
+      </li>
+      <li class="qa">
+        <button type="button" aria-expanded="false"><span class="q">How do I lock in my date?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a"><div><p>A 40% retainer and a signed agreement. Balance is due 14 days before. Bookings begin at $950. Saturdays in peak season (May–Oct), $1,350 minimum.</p></div></div>
+      </li>
+    </ol>
+  </section>
+
+  <div class="rule short" aria-hidden="true"></div>
+
+  <section id="contact" class="contact">
+    <p class="section-label">Book</p>
+    <p class="bio bio-lead">Let's talk about your night.</p>
+    <p class="bio">Tell us the date and the headcount. We'll send a proposal within 48 hours. Write to <a class="bio-link" href="mailto:hello@vibzbar.com">hello@vibzbar.com</a> — we read everything, and we answer all of it.</p>
+    <p class="bio bio-note">Bookings begin at $950. Saturdays in peak season, $1,350.</p>
+    <p class="contact-social">
+      <a class="bio-link" href="mailto:hello@vibzbar.com">hello@vibzbar.com</a>
+      <a class="bio-link" href="https://www.instagram.com/vibzbar" target="_blank" rel="me noopener">@vibzbar</a>
+    </p>
+  </section>
+
+  <p class="foot">El Dorado Hills, CA · RBS Certified · Licensed &amp; Insured · Vibz Bar LLC</p>
+  <p class="foot legal">VIBZ provides bartending services only. Clients purchase and own all alcohol served at their event.</p>
+</main>
+
+<script>
+/* =====================================================================
+   VIBZ — the pairing book.
+   Twelve photographic plates, each a drink and the thing you eat with it.
+   The plate runs to the trimmed edge of the page rather than sitting
+   inside a painted border, so the book takes the photograph's own shape
+   and the crease down the middle is drawn by .sb-book:after.  The leaf that
+   turns is a real curved surface: a chain of nested strips whose tangent
+   sweeps through an arc, so the page bends the way paper bends instead
+   of pivoting like a flat door.
+   ===================================================================== */
+const Q=new URLSearchParams(location.search);
+const DIR='vibz/plates/';
+/* `pour` is what the drawn page actually says.  The original's spreads were
+   sketches with nothing to read, so a title was description enough; these
+   carry a written-up recipe, and a screen reader should get it too. */
+/* `note` is what the plate shows.  It becomes the image's alt text, so the
+   pairing reaches a screen reader as well as an eye. */
+const PAGES=[
+  {file:'the-toast.jpg',          title:'The Toast',            place:'The welcome pour',
+   note:'two signature cocktails raised over a board of cheese and prosciutto'},
+  {file:'gin-tonic.jpg',          title:'Gin & Tonic',          place:'The copa',
+   note:'a copa of gin and tonic with cucumber and juniper, beside artichoke and feta'},
+  {file:'gin-pizza.jpg',          title:'Gin & Pizza',          place:'Cocktail hour',
+   note:'two berry and cucumber gin coolers with a prosciutto and rocket pizza'},
+  {file:'negroni-tataki.jpg',     title:'Negroni & Tataki',     place:'Before dinner',
+   note:'a negroni with orange peel beside seared beef tataki'},
+  {file:'old-fashioned-nuts.jpg', title:'Old Fashioned & Nuts', place:'The slow one',
+   note:'an old fashioned over one large cube with a bowl of roasted nuts'},
+  {file:'highball-karaage.jpg',   title:'Highball & Karaage',   place:'Late service',
+   note:'a whisky highball with lemon beside a plate of karaage'},
+  {file:'highball-almonds.jpg',   title:'Highball & Almonds',   place:'The long pour',
+   note:'a tall highball with a bowl of marcona almonds and green olives'},
+  {file:'highball-pickles.jpg',   title:'Highball & Pickles',   place:'Between courses',
+   note:'a highball with lemon beside a small dish of Japanese pickles'},
+  {file:'rum-bao.jpg',            title:'Rum & Bao',            place:'The second act',
+   note:'dark rum with lime and mint beside steamed bao buns'},
+  {file:'sake-yakitori.jpg',      title:'Sake & Yakitori',      place:'The quiet table',
+   note:'a sake flask and cup on a wooden tray with glazed yakitori'},
+  {file:'sangria-skewers.jpg',    title:'Sangria & Skewers',    place:'For the crowd',
+   note:'a pitcher of sangria poured into two glasses beside a platter of skewers'},
+  {file:'matcha-dorayaki.jpg',    title:'Matcha & Dorayaki',    place:'Zero proof',
+   note:'a matcha latte with a leaf poured into the foam, beside dorayaki pancakes'}
+];
+PAGES.forEach(p=>{p.url=DIR+p.file;p.alt=p.title+' — '+p.note+'.';});
+const M=PAGES.length, LAND=0;   /* the riffle settles back on The Toast */
+
+const wrap=document.getElementById('sbWrap');
+const stage=document.getElementById('sbStage');
+const sb3d=document.getElementById('sb3d');
+const book=document.getElementById('sbBook');
+const capBox=document.getElementById('sbCaptions');
+const hint=document.getElementById('sbHint');
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ------------------------------------------------ the turning leaf */
+const N=18;            /* strips — enough for a smooth curve          */
+const SPAN=0.449;      /* gutter → outer page edge, as a fraction     */
+const BETA=0.60;       /* peak curl of the arc, radians              */
+let idx=0, turn=null;  /* turn = {dir, from, to, t}                   */
+let strips=[];         /* the chain, kept for per-frame lighting       */
+
+function el(t,c){const e=document.createElement(t);if(c)e.className=c;return e}
+function imgEl(i,side){
+  const im=new Image();im.className='sb-half-img '+side;
+  im.draggable=false;im.alt='';im.src=PAGES[i].url;return im;
+}
+
+function halfEl(pos,i){
+  const d=el('div','sb-half '+pos);
+  d.appendChild(imgEl(i,pos));
+  d.appendChild(el('div','gutter-shade '+pos));
+  return d;
+}
+/* build the strip chain once per turn; background offsets are pure
+   geometry, so they never need touching again while it animates */
+function buildCurl(dir,from,to){
+  strips=[];
+  const c=el('div','curl '+dir);
+  c.style.setProperty('--n',N);
+  c.style.setProperty('--span',SPAN);
+  let host=c;
+  for(let i=0;i<N;i++){
+    const s=el('div','strip');
+    s.style.setProperty('--i',i);
+    const gut='calc(var(--bw) * 0.5)';
+    const sw='calc(var(--bw) * '+SPAN+' / '+N+')';
+    /* + var(--mat): the photograph sits inside the page's white margin */
+    const A='calc(-1 * ('+gut+' + '+i+' * '+sw+') + var(--mat))';  /* the from-page */
+    const B='calc('+(i+1)+' * '+sw+' - '+gut+' + var(--mat))';     /* the to-page   */
+    const f=el('div','face front'), b=el('div','face back');
+    const dress=(e,url,px)=>{
+      e.style.backgroundImage='url('+url+')';
+      e.style.backgroundPositionX=px;
+    };
+    dress(f,PAGES[from].url, dir==='next'?A:B);
+    dress(b,PAGES[to].url,   dir==='next'?B:A);
+    f.appendChild(el('div','sh'));f.appendChild(el('div','gl'));
+    b.appendChild(el('div','sh'));b.appendChild(el('div','gl'));
+    s.appendChild(f);s.appendChild(b);
+    if(i===N-1)s.classList.add('edge');
+    host.appendChild(s);host=s;
+    strips.push(s);
+  }
+  return c;
+}
+function applyTurn(t){
+  const th=Math.PI*t;                       /* how far the leaf has swung */
+  const beta=BETA*Math.sin(Math.PI*t);      /* it is flat at both ends    */
+  const D=180/Math.PI;
+  const tt=th+beta, td=2*beta/N;
+  sb3d.style.setProperty('--tt',(tt*D).toFixed(2)+'deg');
+  sb3d.style.setProperty('--td',(td*D).toFixed(3)+'deg');
+  sb3d.style.setProperty('--shade',Math.sin(Math.PI*t).toFixed(3));
+  fadeCaption(t);
+  for(let i=0;i<strips.length;i++){
+    const l1=Math.abs(Math.cos(tt-i*td));        /* facing at this strip's near edge */
+    const l2=Math.abs(Math.cos(tt-(i+1)*td));    /* ...and at its far edge           */
+    const st=strips[i].style;
+    st.setProperty('--lit',l1.toFixed(3));
+    st.setProperty('--a1',((1-l1)*.62).toFixed(3));
+    st.setProperty('--a2',((1-l2)*.62).toFixed(3));
+  }
+}
+function paint(){
+  book.textContent='';
+  if(!turn){
+    const f=el('div','sb-full');
+    const im=new Image();im.src=PAGES[idx].url;im.alt=PAGES[idx].alt;
+    im.draggable=false;
+    f.appendChild(im);
+    book.appendChild(f);
+    sb3d.style.setProperty('--shade','0');
+  }else{
+    const next=turn.dir==='next';
+    book.appendChild(halfEl('left', next?turn.from:turn.to));
+    book.appendChild(halfEl('right',next?turn.to:turn.from));
+    book.appendChild(buildCurl(turn.dir,turn.from,turn.to));
+    applyTurn(turn.t);
+  }
+  const a=el('button','sb-zone sb-prev'),b=el('button','sb-zone sb-next');
+  a.setAttribute('aria-label','previous page');b.setAttribute('aria-label','next page');
+  book.appendChild(a);book.appendChild(b);
+  layout();
+  caption();
+  marks();
+}
+function caption(){
+  capBox.textContent='';
+  capOut=capIn=null;
+  if(turn){
+    capOut=el('p','sb-caption live');capOut.textContent=PAGES[turn.from].title;capBox.appendChild(capOut);
+    capIn=el('p','sb-caption live');capIn.textContent=PAGES[turn.to].title;capBox.appendChild(capIn);
+    fadeCaption(turn.t);
+  }else{
+    const p=el('p','sb-caption');p.textContent=PAGES[idx].title;capBox.appendChild(p);
+  }
+}
+let capOut=null,capIn=null;
+function fadeCaption(t){
+  if(!capOut||!capIn)return;
+  /* the old title is gone before the new one arrives, so they never
+     sit on top of each other mid-drag */
+  const out=1-Math.max(0,Math.min(1,(t-0.10)/0.28));
+  const inn=Math.max(0,Math.min(1,(t-0.56)/0.30));
+  capOut.style.opacity=out.toFixed(3);
+  capIn.style.opacity=inn.toFixed(3);
+}
+function layout(){
+  sb3d.style.setProperty('--bw',book.clientWidth+'px');
+}
+addEventListener('resize',layout);
+
+/* ------------------------------------------------------ spring loop */
+let spring=null;
+function animateTo(target,onDone,stiff,damp){
+  spring={kind:'spring',v:0,target:target,done:onDone,k:stiff||150,c:damp||22};
+  kick();
+}
+/* the riffle wants a fixed tempo, not a spring settling time */
+function tweenTo(target,dur,onDone){
+  spring={kind:'tween',from:turn?turn.t:0,target:target,dur:dur,e:0,done:onDone};
+  kick();
+}
+let raf=null,last=0;
+function tick(now){
+  raf=null;
+  const dt=Math.min(0.032,(now-last)/1000||0.016);last=now;
+  if(spring&&turn){
+    const s=spring;
+    if(s.kind==='tween'){
+      s.e+=dt;
+      const k=Math.min(1,s.e/s.dur);
+      turn.t=s.from+(s.target-s.from)*k;
+      applyTurn(turn.t);
+      if(k>=1){spring=null;const d=s.done;d&&d();}
+    }else{
+      const x=turn.t-s.target;
+      s.v+= (-s.k*x - s.c*s.v)*dt;
+      turn.t+=s.v*dt;
+      if(Math.abs(turn.t-s.target)<0.002&&Math.abs(s.v)<0.02){
+        turn.t=s.target;spring=null;
+        applyTurn(turn.t);
+        const d=s.done;d&&d();
+      }else applyTurn(turn.t);
+    }
+  }
+  viewSpring();
+  /* kick() may already have queued the next frame from a done-callback */
+  if((spring||viewActive)&&raf===null) raf=requestAnimationFrame(tick);
+}
+function kick(){ if(raf===null){last=performance.now();raf=requestAnimationFrame(tick);} }
+
+/* ------------------------------------------- tilt + zoom of the book */
+const TILT_X=4.5, TILT_Y=7;      /* degrees — deliberately restrained   */
+const ZOOM_MIN=0.9, ZOOM_MAX=1.5;
+const view={rx:0,ry:0,z:1, trx:0,try_:0,tz:1};
+let viewActive=false;
+function applyView(){
+  sb3d.style.setProperty('--rx',view.rx.toFixed(2)+'deg');
+  sb3d.style.setProperty('--ry',view.ry.toFixed(2)+'deg');
+  sb3d.style.setProperty('--zoom',view.z.toFixed(3));
+}
+function viewSpring(){
+  const e=0.14;
+  let moved=false;
+  for(const [k,t] of [['rx','trx'],['ry','try_'],['z','tz']]){
+    const d=view[t]-view[k];
+    if(Math.abs(d)>0.0006){view[k]+=d*e;moved=true;}
+    else view[k]=view[t];
+  }
+  if(moved)applyView();
+  viewActive=moved;
+  return moved;
+}
+function setView(rx,ry,z){
+  view.trx=Math.max(-TILT_X,Math.min(TILT_X,rx));
+  view.try_=Math.max(-TILT_Y,Math.min(TILT_Y,ry));
+  view.tz=Math.max(ZOOM_MIN,Math.min(ZOOM_MAX,z));
+  viewActive=true;kick();
+  if(typeof syncZoom==='function')syncZoom();
+}
+/* the book leans toward the cursor — no dragging, and never far */
+function tiltTo(cx,cy){
+  if(drag)return;                       /* hold still while a page is being turned */
+  const r=book.getBoundingClientRect();
+  if(!r.width)return;
+  const nx=Math.max(-1,Math.min(1,(cx-(r.left+r.width/2))/(r.width*0.62)));
+  const ny=Math.max(-1,Math.min(1,(cy-(r.top+r.height/2))/(r.height*0.9)));
+  setView(-ny*TILT_X, nx*TILT_Y, view.tz);
+}
+addEventListener('pointermove',e=>{
+  if(e.pointerType==='touch')return;
+  tiltTo(e.clientX,e.clientY);
+},{passive:true});
+addEventListener('pointerout',e=>{if(!e.relatedTarget)setView(0,0,view.tz)});
+addEventListener('blur',()=>setView(0,0,view.tz));
+/* the wheel belongs to the page — zoom is on the toolbar, or a double click
+   to come back to 100% */
+stage.addEventListener('dblclick',()=>setView(view.trx,view.try_,1));
+
+/* ------------------------------------------------------- pointer work */
+let drag=null;
+function bookRect(){return book.getBoundingClientRect()}
+function hideHint(){hint.classList.add('gone')}
+
+stage.addEventListener('pointerdown',e=>{
+  if(e.button!==0)return;
+  hideHint();
+  const onBook=e.target.closest('.sb-zone');
+  /* Capture and preventDefault only once a drag is really starting on the
+     page.  Doing either on every pointerdown in the stage retargets the
+     click to the stage, and the arrow buttons never hear about it. */
+  if(!onBook||introOn)return;
+  e.preventDefault();                     /* no text selection, no image drag */
+  stage.setPointerCapture(e.pointerId);
+  const r=bookRect();
+  const dir=(e.clientX-r.left)/r.width>0.5?'next':'prev';
+  startTurn(dir,0);
+  drag={dir:dir,x0:e.clientX,w:r.width,moved:0,vel:0,tPrev:performance.now()};
+});
+stage.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  const dx=e.clientX-drag.x0;
+  drag.moved=Math.max(drag.moved,Math.abs(dx));
+  const raw=(drag.dir==='next'? -dx : dx)/(drag.w*0.62);
+  const t=Math.max(0,Math.min(1,raw));
+  const now=performance.now();
+  drag.vel=(t-(turn?turn.t:0))/Math.max(0.001,(now-drag.tPrev)/1000);
+  drag.tPrev=now;
+  if(turn){turn.t=t;applyTurn(t);}
+});
+function endDrag(e){
+  if(!drag)return;
+  const d=drag;drag=null;
+  if(!turn)return;
+  if(d.moved<6){                              /* a tap, not a drag */
+    commit();return;
+  }
+  const go = turn.t>0.42 || d.vel>1.1;
+  if(go)commit(); else cancel();
+}
+stage.addEventListener('dragstart',e=>e.preventDefault());
+stage.addEventListener('selectstart',e=>e.preventDefault());
+stage.addEventListener('pointerup',endDrag);
+stage.addEventListener('pointercancel',endDrag);
+
+/* ------------------------------------------------------ turn control */
+function startTurn(dir,t){
+  spring=null;
+  if(turn){idx=turn.to;turn=null;}      /* settle anything still in flight */
+  const from=idx;
+  turn={dir:dir,from:from,to:dir==='next'?(from+1)%M:(from-1+M)%M,t:t||0};
+  paint();
+}
+function commit(){
+  if(!turn)return;
+  if(REDUCED){idx=turn.to;turn=null;paint();return;}
+  animateTo(1,()=>{idx=turn.to;turn=null;paint();},170,26);
+  kick();
+}
+function cancel(){
+  if(!turn)return;
+  animateTo(0,()=>{turn=null;paint();},150,24);
+  kick();
+}
+function step(dir){
+  if(introOn)endIntro();
+  if(turn){ /* finish whatever is in flight first */ idx=turn.to;turn=null; }
+  startTurn(dir,0);commit();
+}
+function goTo(i){
+  if(introOn)endIntro();
+  if(i===idx)return;
+  if(turn){idx=turn.to;turn=null;}
+  const fwd=(i-idx+M)%M, back=(idx-i+M)%M;
+  if(Math.min(fwd,back)===1){step(fwd===1?'next':'prev');return;}
+  idx=i;paint();
+}
+document.getElementById('sbLeft').onclick=()=>step('prev');
+document.getElementById('sbRight').onclick=()=>step('next');
+addEventListener('keydown',e=>{
+  if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  const t=e.target;
+  if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;
+  e.preventDefault();hideHint();
+  step(e.key==='ArrowRight'?'next':'prev');
+});
+document.getElementById('heroDown').onclick=()=>{
+  document.getElementById('about').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+/* --------------------------------------------------------- the controls */
+const zRead=document.getElementById('zRead');
+const zInBtn=document.getElementById('zIn'), zOutBtn=document.getElementById('zOut');
+const plateCount=document.getElementById('plateCount');
+
+function syncZoom(){
+  zRead.textContent=Math.round(view.tz*100)+'%';
+  zOutBtn.disabled=view.tz<=ZOOM_MIN+0.001;
+  zInBtn.disabled=view.tz>=ZOOM_MAX-0.001;
+}
+zInBtn.onclick=()=>{setView(view.trx,view.try_,view.tz*1.16);hideHint();};
+zOutBtn.onclick=()=>{setView(view.trx,view.try_,view.tz/1.16);hideHint();};
+
+/* ------------------------------------------------------------ the FAQ
+   One answer open at a time.  The panel is a grid row animating from 0fr
+   to 1fr, so it opens to exactly its own height with no measuring. */
+document.querySelector('.qa-list').addEventListener('click',e=>{
+  const b=e.target.closest('button');
+  if(!b)return;
+  const open=b.getAttribute('aria-expanded')==='true';
+  document.querySelectorAll('.qa button[aria-expanded="true"]')
+    .forEach(o=>o.setAttribute('aria-expanded','false'));
+  b.setAttribute('aria-expanded',String(!open));
+});
+
+/* --------------------------------------------------------- the index */
+const plateList=document.getElementById('plateList');
+PAGES.forEach((p,i)=>{
+  const li=el('li');
+  const b=el('button','plate');
+  b.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span>'+
+              '<span class="t"></span><span class="p"></span>';
+  b.querySelector('.t').textContent=p.title;
+  b.querySelector('.p').textContent=p.place;
+  b.onclick=()=>{goTo(i);document.getElementById('sketchbook').scrollIntoView({behavior:'smooth',block:'center'});};
+  li.appendChild(b);plateList.appendChild(li);
+});
+function marks(){
+  const cur=turn?turn.to:idx;
+  plateCount.innerHTML='<b>'+String(cur+1).padStart(2,'0')+'</b> / '+String(M).padStart(2,'0');
+  plateList.querySelectorAll('.plate').forEach((b,i)=>b.setAttribute('aria-current',i===cur?'true':'false'));
+}
+
+/* ---------------------------------------------------------- the riffle */
+let riffle=null,riffleAt=0,introOn=false,introGuard=null;
+function endIntro(){
+  introOn=false;wrap.classList.remove('intro','b2');
+  if(introGuard){clearTimeout(introGuard);introGuard=null;}
+}
+/* The riffle runs on requestAnimationFrame, which a browser stops servicing
+   in a background tab.  Without this, opening the site in a tab you are not
+   looking at leaves the book blurred and undraggable -- introOn gates the
+   drag -- so a wall clock ends the intro whatever the frames are doing. */
+function abortIntro(){
+  if(!introOn)return;
+  endIntro();
+  spring=null;turn=null;idx=LAND;paint();
+}
+function riffleStep(){
+  const s=riffle[riffleAt];
+  wrap.classList.toggle('b2',s.bell>0.55);
+  startTurn('next',0);
+  tweenTo(1,s.dur,()=>{
+    idx=turn.to;turn=null;
+    riffleAt++;
+    if(introOn&&riffleAt<riffle.length){paint();riffleStep();}
+    else{endIntro();idx=LAND;paint();}   /* land explicitly, not by modulo */
+  });
+}
+function startIntro(){
+  const coarse=matchMedia('(max-width: 640px), (pointer: coarse)').matches;
+  if(coarse||REDUCED||Q.has('nointro')){idx=LAND;paint();return;}
+  const steps=M+LAND;
+  riffle=[];
+  for(let r=0;r<steps;r++){
+    const bell=Math.sin(Math.PI*(r/(steps-1)));
+    riffle.push({bell:bell,dur:0.26-0.19*bell});
+  }
+  riffleAt=0;introOn=true;wrap.classList.add('intro');
+  introGuard=setTimeout(abortIntro,3200);
+  riffleStep();
+}
+
+/* ------------------------------------------------------------- boot */
+document.addEventListener('visibilitychange',()=>{if(document.hidden)abortIntro()});
+
+(async function boot(){
+  idx=Q.has('shot')?(parseInt(Q.get('shot'),10)||0)%M:0;
+  paint();applyView();
+  await Promise.all(PAGES.map(p=>{
+    const im=new Image();im.src=p.url;
+    return im.decode?im.decode().catch(()=>{}):new Promise(r=>{im.onload=im.onerror=r});
+  }));
+  if(document.fonts&&document.fonts.ready)await document.fonts.ready.catch(()=>{});
+  syncZoom();
+  document.body.dataset.ready='1';
+  if(Q.has('shot')){
+    if(Q.has('t')){startTurn(Q.get('dir')||'next',parseFloat(Q.get('t')));}
+    return;
+  }
+  setTimeout(startIntro,220);
+})();
+</script>
+</body>
+</html>
