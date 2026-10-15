@@ -924,6 +924,7 @@ function paint(){
   caption();
   marks();
 }
+let capFromTurn=false;   /* the caption on screen came out of a turn */
 function caption(){
   capBox.textContent='';
   capOut=capIn=null;
@@ -931,8 +932,15 @@ function caption(){
     capOut=el('p','sb-caption live');capOut.textContent=PAGES[turn.from].title;capBox.appendChild(capOut);
     capIn=el('p','sb-caption live');capIn.textContent=PAGES[turn.to].title;capBox.appendChild(capIn);
     fadeCaption(turn.t);
+    capFromTurn=true;
   }else{
-    const p=el('p','sb-caption');p.textContent=PAGES[idx].title;capBox.appendChild(p);
+    /* The title that lands is already fully shown by the turn, so it takes
+       the .live class (no entrance animation): re-fading it in from nothing
+       is what made the name flick a second time.  Only a title that was not
+       part of a turn (the first paint) fades in. */
+    const p=el('p','sb-caption'+(capFromTurn?' live':''));
+    p.textContent=PAGES[idx].title;capBox.appendChild(p);
+    capFromTurn=false;
   }
 }
 let capOut=null,capIn=null;
