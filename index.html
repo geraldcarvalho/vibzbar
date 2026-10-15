@@ -47,7 +47,12 @@ button{font:inherit}
 
 /* the painted ground the whole page sits on */
 .wash{position:fixed;inset:0;z-index:-2;pointer-events:none;background:var(--paper)}
-.wash:after{content:none}
+.wash:after{
+  content:"";position:absolute;inset:0;
+  background:url(vibz/wave_bg_2.png) center top / cover no-repeat;
+  opacity:var(--wave,.5);mix-blend-mode:multiply;will-change:opacity;
+}
+@media (max-width:760px){.wash:after{display:none}}
 
 /* ---------------- top bar ---------------- */
 .top{
@@ -378,10 +383,10 @@ button{font:inherit}
 /* the fixed bar would otherwise sit on top of a section's own label */
 .about,.plates,.contact{scroll-margin-top:clamp(96px,13vh,132px)}
 .plates,.contact{margin-top:clamp(72px,11vh,120px)}
-/* a barely-there grey-blue band behind How it works, full width of the page */
+/* a barely-there, see-through grey-blue band behind How it works, full width of the page */
 #how{
-  background:#eceef3;padding-block:clamp(44px,7vh,72px);
-  box-shadow:0 0 0 100vmax #eceef3;clip-path:inset(0 -100vmax);
+  background:rgba(45,63,94,.04);padding-block:clamp(44px,7vh,72px);
+  box-shadow:0 0 0 100vmax rgba(45,63,94,.04);clip-path:inset(0 -100vmax);
 }
 
 .lede{
@@ -390,6 +395,7 @@ button{font:inherit}
 }
 .bio-lead{font-family:var(--display);font-size:clamp(24px,3vw,38px);line-height:1.18;color:var(--ink);
   font-weight:400;letter-spacing:.005em;max-width:20ch;margin-bottom:.5em}
+.contact .bio-lead{max-width:none}
 .bio-note{font-size:clamp(14px,1.4vw,16px);color:var(--ink-soft);max-width:none}
 
 .step-list,.tier-list,.qa-list{list-style:none;margin:0;padding:0}
@@ -596,7 +602,7 @@ button{font:inherit}
       <li class="step">
         <span class="n">01</span>
         <svg class="step-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14h40a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H33l-11 9v-9H12a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4Z"/><path d="M20 25h24M20 33h14"/></svg>
-        <h3>Tell us about the night</h3>
+        <h3>Tell us about the event</h3>
         <p>Date, headcount, address, vibe. Two minutes.</p>
       </li>
       <li class="step">
@@ -699,8 +705,7 @@ button{font:inherit}
 
   <section id="contact" class="contact">
     <p class="section-label">Book</p>
-    <p class="bio bio-lead">Let's talk about your night.</p>
-    <p class="bio bio-note">Bookings begin at $950. Saturdays in peak season, $1,350.</p>
+    <p class="bio bio-lead">Let's talk about your event.</p>
     <form class="book-form" id="bookForm" action="https://formspree.io/f/[FORMSPREE_ID]" method="POST">
       <div class="field">
         <label for="bf-name">Name</label>
@@ -739,7 +744,7 @@ button{font:inherit}
         </select>
       </div>
       <div class="field wide">
-        <label for="bf-notes">Tell us about the night <span class="opt">(optional)</span></label>
+        <label for="bf-notes">Tell us about the event <span class="opt">(optional)</span></label>
         <textarea id="bf-notes" name="message" rows="5"></textarea>
       </div>
       <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -1143,6 +1148,23 @@ bookForm.addEventListener('submit',async e=>{
     btn.disabled=false;
   }
 });
+
+/* ------------------------------------------------------ the wave backdrop
+   Full strength (50%) over the sketchbook, then it fades out as the book scrolls
+   away: it starts to go once the hero is 40% gone and is clear by the time
+   the hero has fully passed. */
+const washEl=document.querySelector('.wash'), heroEl=document.getElementById('sketchbook');
+const WAVE_MAX=0.5;
+let waveQueued=false;
+function fadeWave(){
+  waveQueued=false;
+  const end=heroEl.offsetTop+heroEl.offsetHeight;
+  const t=Math.max(0,Math.min(1,(scrollY-end*0.4)/(end*0.6)));
+  washEl.style.setProperty('--wave',(WAVE_MAX*(1-t)).toFixed(3));
+}
+addEventListener('scroll',()=>{if(!waveQueued){waveQueued=true;requestAnimationFrame(fadeWave)}},{passive:true});
+addEventListener('resize',fadeWave);
+fadeWave();
 
 /* --------------------------------------------------------- the counter */
 function marks(){
