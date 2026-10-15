@@ -137,36 +137,51 @@ button{font:inherit}
 .sb-tilt{
   position:relative;
   transform-style:preserve-3d;
-  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
+  transform:rotateX(calc(var(--rx,0deg) + 5deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
   will-change:transform;
+}
+/* The cover: a navy cloth board that shows a little past the pages on every
+   side, thicker along the bottom, so the spread reads as a bound book
+   with some weight rather than a flat card.  Sized from the book's width so
+   it scales with it. */
+.sb-tilt:before{
+  content:"";position:absolute;z-index:0;pointer-events:none;
+  left:calc(var(--bw,0px) * -.008);right:calc(var(--bw,0px) * -.008);
+  top:calc(var(--bw,0px) * -.006);bottom:calc(var(--bw,0px) * -.013);
+  border-radius:calc(var(--bw,0px) * .006);
+  background:linear-gradient(180deg,#3d5075 0%,#2d3f5e 42%,#222f4a 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(0,0,0,.25);
 }
 /* Each plate sits inside a white border of --mat on all four sides, so the
    book is a little taller than the photograph:
    1 / ((1 - 2m)/1.7917 + 2m) with m = .0111.  Every surface that paints the
-   photograph insets it by the same amount.  The page block below it is a
-   few stepped paper edges, which is what makes it read as a thick book
-   rather than a flat card. */
+   photograph insets it by the same amount.  Under the pages, a few stepped
+   paper edges make the page block. */
 .sb-book{
   position:relative;width:100%;aspect-ratio:1.7608;
   transform-style:preserve-3d;z-index:1;
   box-shadow:
-    -1px 1px 0 #e3e7ef, 1px 1px 0 #e3e7ef,
-    -2px 2px 0 #f7f8fb, 2px 2px 0 #f7f8fb,
-    -3px 3px 0 #d4d8e8, 3px 3px 0 #d4d8e8,
-    -4px 4px 0 #eef0f6, 4px 4px 0 #eef0f6,
-    -5px 5px 0 #c5cbdc, 5px 5px 0 #c5cbdc;
+    0 1px 0 #e1e5ee, 0 2px 0 #f7f8fb, 0 3px 0 #d3d8e6, 0 4px 0 #eef0f6, 0 5px 0 #c3c9da,
+    -1px 0 0 #e8ebf2, 1px 0 0 #e8ebf2;
 }
 /* the crease and the pages' own curvature live on the book, not on the
    settled page, so they do not pop out of existence the moment a leaf lifts.
-   Each half darkens toward the gutter, like paper that bows up from the
-   spine. */
+   Each half darkens toward the gutter and at its outer edge and catches a
+   little light across the middle, like paper that bows up from the spine. */
 .sb-book:after{
   content:"";position:absolute;inset:0;
   pointer-events:none;z-index:5;
   background:
     linear-gradient(90deg,
-      rgba(28,42,68,0) 39%,rgba(28,42,68,.07) 46.5%,rgba(28,42,68,.22) 50%,
-      rgba(28,42,68,.07) 53.5%,rgba(28,42,68,0) 61%);
+      rgba(28,42,68,0) 37%,rgba(28,42,68,.10) 45%,rgba(28,42,68,.34) 49.6%,rgba(28,42,68,.42) 50%,
+      rgba(28,42,68,.34) 50.4%,rgba(28,42,68,.10) 55%,rgba(28,42,68,0) 63%),
+    linear-gradient(90deg,
+      rgba(255,255,255,0) 12%,rgba(255,255,255,.12) 27%,rgba(255,255,255,0) 41%,
+      rgba(255,255,255,0) 59%,rgba(255,255,255,.10) 73%,rgba(255,255,255,0) 88%),
+    linear-gradient(90deg,
+      rgba(28,42,68,.13) 0%,rgba(28,42,68,0) 6%,rgba(28,42,68,0) 94%,rgba(28,42,68,.13) 100%),
+    linear-gradient(180deg,
+      rgba(28,42,68,.05) 0%,rgba(28,42,68,0) 10%,rgba(28,42,68,0) 90%,rgba(28,42,68,.07) 100%);
   opacity:calc(1 - var(--shade,0));
 }
 
@@ -174,7 +189,7 @@ button{font:inherit}
    no box, no filter on the artwork, nothing with an edge of its own.
    Both blobs fade to zero well inside their own bounds, and both ease
    off while a leaf is in the air. */
-.sb-cast{position:absolute;pointer-events:none;z-index:0}
+.sb-cast{position:absolute;pointer-events:none;z-index:-1}
 .sb-cast.ambient{
   left:-1%;right:-1%;top:6%;bottom:-8%;
   background:radial-gradient(50% 50% at 50% 58%,
