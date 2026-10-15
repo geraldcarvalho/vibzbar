@@ -107,9 +107,9 @@ button{font:inherit}
   padding:10px 14px;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent;
   animation:cue-breathe 2.6s ease-in-out infinite;z-index:3;
 }
-.hero-down:hover{animation:none;opacity:1}
-@keyframes cue-breathe{0%,100%{opacity:.15}50%{opacity:.7}}
-@media (prefers-reduced-motion:reduce){.hero-down{animation:none;opacity:.5}}
+.hero-down:hover{animation:none;opacity:.7}
+@keyframes cue-breathe{0%,100%{opacity:.08}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.hero-down{animation:none;opacity:.25}}
 
 /* ---------------- sketchbook ---------------- */
 .hero,.hero *{-webkit-user-select:none;-moz-user-select:none;user-select:none}
@@ -122,10 +122,11 @@ button{font:inherit}
 }
 .sb-arrow{
   flex:none;display:inline-flex;align-items:center;justify-content:center;padding:10px 8px;
-  border:0;background:transparent;color:var(--ink-soft);cursor:pointer;transition:color .2s;
+  border:0;background:transparent;color:var(--ink-soft);cursor:pointer;opacity:.5;
+  transition:color .2s,opacity .2s;
   -webkit-tap-highlight-color:transparent;z-index:8;
 }
-.sb-arrow:hover{color:var(--ink)}
+.sb-arrow:hover{color:var(--ink);opacity:.85}
 
 /* the book's own untransformed frame; only .sb-tilt leans underneath */
 .sb-3d{
@@ -330,10 +331,10 @@ button{font:inherit}
 .sb-wrap.intro .sb-caption.cap-out{display:none}
 @media (max-width:640px){
   .hero-kicker{font-size:10.5px;letter-spacing:.16em}
-  .sb-wrap{width:100vw;margin-inline:calc(50% - 50vw);padding-inline:20px}
-  .sb-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:70;padding:12px 6px}
-  .sb-arrow.left{left:2px}
-  .sb-arrow.right{right:2px}
+  /* the arrows sit in the margins either side of the pages, so the book is
+     a little narrower to make room for them */
+  .sb-wrap{width:100vw;margin-inline:calc(50% - 50vw);padding-inline:8px}
+  .sb-arrow{padding:14px 6px}
   .sb-3d{max-width:none}
   .sb-hint{font-size:9.5px;letter-spacing:.1em;padding:0 16px;text-align:center}
 }
