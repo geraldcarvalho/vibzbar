@@ -1,0 +1,15 @@
+:root{
+--font-serif-display:"Cormorant Garamond",Georgia,serif;
+--font-sans:"Hurme Sans",system-ui,sans-serif;
+--fs-display:clamp(56px,8vw,112px);/* @kind other */--fs-h1:56px;--fs-h2:40px;--fs-h3:28px;--fs-lead:20px;--fs-body:16px;--fs-small:14px;--fs-eyebrow:13px;
+--lh-tight:1.02;/* @kind other */--lh-head:1.12;/* @kind other */--lh-body:1.55;/* @kind other */
+--tracking-eyebrow:.22em;--tracking-tight:-.02em;
+}
+.t-display{font:700 var(--fs-display)/var(--lh-tight) var(--font-serif-display);letter-spacing:var(--tracking-tight);color:var(--text-heading)}
+.t-h1{font:700 var(--fs-h1)/var(--lh-head) var(--font-serif-display);letter-spacing:var(--tracking-tight);color:var(--text-heading)}
+.t-h2{font:400 var(--fs-h2)/var(--lh-head) var(--font-serif-display);color:var(--text-heading)}
+.t-h3{font:400 var(--fs-h3)/var(--lh-head) var(--font-serif-display);color:var(--text-heading)}
+.t-italic{font-style:italic}
+.t-lead{font:400 var(--fs-lead)/var(--lh-body) var(--font-sans);color:var(--text-body)}
+.t-body{font:400 var(--fs-body)/var(--lh-body) var(--font-sans);color:var(--text-body)}
+.t-eyebrow{font:500 var(--fs-eyebrow)/1 var(--font-sans);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-body)}

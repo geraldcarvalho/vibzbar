@@ -1,0 +1,13 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Core" subtitle="Button, Tag, Input, Card" -->
+<link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:24px;display:grid;gap:20px}.r{display:flex;gap:12px;align-items:center;flex-wrap:wrap}</style>
+<script src="../../_ds_bundle.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<div id="r"></div>
+<script type="text/babel">const {Button,Tag,Input,Card}=window.VIBZDesignSystem_2b859d;
+ReactDOM.createRoot(document.getElementById('r')).render(<div style={{display:'grid',gap:20}}>
+<div className="r"><Button>Check your date</Button><Button variant="secondary">See menus</Button><Button variant="ghost">Learn more</Button><Button size="sm" disabled>Disabled</Button></div>
+<div className="r"><Tag>Weddings</Tag><Tag tone="navy">Lake Tahoe</Tag><Tag tone="outline">Corporate</Tag></div>
+<Input label="Event date" placeholder="June 14"/>
+<div className="r" style={{alignItems:'stretch'}}><Card style={{flex:1}} eyebrow="Weddings" title="Pour for the toast.">Styled bar, two bartenders.</Card><Card style={{flex:1}} tone="dark" eyebrow="Birthdays" title="Make it a moment.">Specific, never fussy.</Card></div></div>);</script>

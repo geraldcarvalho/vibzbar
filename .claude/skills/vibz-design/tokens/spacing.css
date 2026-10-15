@@ -1,0 +1,9 @@
+:root{
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:72px;--space-9:112px;
+--radius-sm:4px;--radius-md:8px;--radius-lg:16px;--radius-pill:999px;
+--shadow-card:0 1px 2px rgba(28,42,68,.06),0 12px 32px -12px rgba(28,42,68,.18);
+--shadow-emboss:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 2px rgba(45,63,94,.12);
+--shadow-deboss:inset 0 1px 3px rgba(45,63,94,.22),0 1px 0 rgba(255,255,255,.8);
+--ease-calm:cubic-bezier(.22,.61,.36,1);/* @kind other */--dur-fast:160ms;/* @kind other */--dur-base:320ms;/* @kind other */
+--tex-letterpress:url("../assets/letterpress-v-pattern.png");/* @kind other */
+}

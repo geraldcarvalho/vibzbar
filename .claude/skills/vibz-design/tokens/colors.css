@@ -1,0 +1,11 @@
+:root{
+--vibz-navy:#2d3f5e;--vibz-slate:#7a8fa8;--vibz-lavender:#d4d8e8;--vibz-white:#f4f6f9;
+--vibz-midnight:#1c2a44;--vibz-dusty-blue:#6a7fa3;--vibz-cool-grey:#e9ecf2;
+--vibz-navy-deep:#1a2538;
+--fg-1:var(--vibz-navy);--fg-2:var(--vibz-slate);--fg-inverse:var(--vibz-white);
+--bg-1:var(--vibz-white);--bg-2:var(--vibz-lavender);--bg-dark:var(--vibz-navy);
+--text-heading:var(--fg-1);--text-body:var(--fg-1);--text-muted:#5b6f8a;
+--surface-page:var(--bg-1);--surface-card:#fff;--surface-tint:var(--vibz-cool-grey);--surface-dark:var(--vibz-navy);
+--border-subtle:rgba(45,63,94,.14);--border-strong:rgba(45,63,94,.32);
+--accent:var(--vibz-navy);--accent-hover:var(--vibz-midnight);--focus-ring:var(--vibz-slate);
+}
