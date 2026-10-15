@@ -140,74 +140,73 @@ button{font:inherit}
   transform:rotateX(calc(var(--rx,0deg) + 5deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
   will-change:transform;
 }
-/* The cover: a navy cloth board that shows a little past the pages on every
-   side, thicker along the bottom, so the spread reads as a bound book
-   with some weight rather than a flat card.  Sized from the book's width so
-   it scales with it. */
-.sb-tilt:before{
-  content:"";position:absolute;z-index:0;pointer-events:none;
-  left:calc(var(--bw,0px) * -.008);right:calc(var(--bw,0px) * -.008);
-  top:calc(var(--bw,0px) * -.006);bottom:calc(var(--bw,0px) * -.013);
-  border-radius:calc(var(--bw,0px) * .006);
-  background:linear-gradient(180deg,#3d5075 0%,#2d3f5e 42%,#222f4a 100%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(0,0,0,.25);
-}
 /* Each plate sits inside a white border of --mat on all four sides, so the
    book is a little taller than the photograph:
    1 / ((1 - 2m)/1.7917 + 2m) with m = .0111.  Every surface that paints the
-   photograph insets it by the same amount.  Under the pages, a few stepped
-   paper edges make the page block. */
+   photograph insets it by the same amount.  Down each side, a few stepped
+   paper edges, light and dark alternating, show the page block as if the book
+   were seen from above; nothing shows along the bottom. */
 .sb-book{
   position:relative;width:100%;aspect-ratio:1.7608;
   transform-style:preserve-3d;z-index:1;
   box-shadow:
-    0 1px 0 #e1e5ee, 0 2px 0 #f7f8fb, 0 3px 0 #d3d8e6, 0 4px 0 #eef0f6, 0 5px 0 #c3c9da,
-    -1px 0 0 #e8ebf2, 1px 0 0 #e8ebf2;
+    -1px 0 0 rgba(150,163,196,.20), 1px 0 0 rgba(150,163,196,.20),
+    -2px 0 0 rgba(255,255,255,.50), 2px 0 0 rgba(255,255,255,.50),
+    -3px 0 0 rgba(135,149,184,.17), 3px 0 0 rgba(135,149,184,.17),
+    -4px 0 0 rgba(255,255,255,.40), 4px 0 0 rgba(255,255,255,.40),
+    -5px 0 0 rgba(120,135,172,.14), 5px 0 0 rgba(120,135,172,.14),
+    -6px 0 0 rgba(255,255,255,.30), 6px 0 0 rgba(255,255,255,.30),
+    -7px 0 0 rgba(105,120,160,.11), 7px 0 0 rgba(105,120,160,.11);
 }
-/* the crease and the pages' own curvature live on the book, not on the
-   settled page, so they do not pop out of existence the moment a leaf lifts.
-   Each half darkens toward the gutter and at its outer edge and catches a
-   little light across the middle, like paper that bows up from the spine. */
-.sb-book:after{
-  content:"";position:absolute;inset:0;
-  pointer-events:none;z-index:5;
+
+/* The crease and the pages' own curvature are drawn on a flat overlay laid
+   over the whole book, outside the 3D group, and multiplied into the
+   photographs so they darken the picture itself, as a real fold would.
+   Multiply blending drops out inside a preserve-3d group once a leaf is in
+   the air, so this has to live out here.  It stays put while a page turns and
+   eases out as the leaf lifts and back in as it settles, tied to --shade, so
+   nothing pops at either end.  One unbroken seam at the spine, the paper
+   darkening softly toward it and a little at the outer edges. */
+.sb-crease{
+  position:absolute;inset:0;pointer-events:none;z-index:30;
+  mix-blend-mode:multiply;
+  transform:rotateX(calc(var(--rx,0deg) + 5deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
   background:
     linear-gradient(90deg,
-      rgba(28,42,68,0) 37%,rgba(28,42,68,.10) 45%,rgba(28,42,68,.34) 49.6%,rgba(28,42,68,.42) 50%,
-      rgba(28,42,68,.34) 50.4%,rgba(28,42,68,.10) 55%,rgba(28,42,68,0) 63%),
+      rgba(30,42,66,0) 43%,rgba(30,42,66,.06) 47.5%,rgba(30,42,66,.13) 49.7%,rgba(30,42,66,.20) 50%,
+      rgba(30,42,66,.13) 50.3%,rgba(30,42,66,.06) 52.5%,rgba(30,42,66,0) 57%),
     linear-gradient(90deg,
-      rgba(255,255,255,0) 12%,rgba(255,255,255,.12) 27%,rgba(255,255,255,0) 41%,
-      rgba(255,255,255,0) 59%,rgba(255,255,255,.10) 73%,rgba(255,255,255,0) 88%),
-    linear-gradient(90deg,
-      rgba(28,42,68,.13) 0%,rgba(28,42,68,0) 6%,rgba(28,42,68,0) 94%,rgba(28,42,68,.13) 100%),
+      rgba(30,42,66,.04) 0%,rgba(30,42,66,0) 8%,rgba(30,42,66,0) 92%,rgba(30,42,66,.04) 100%),
     linear-gradient(180deg,
-      rgba(28,42,68,.05) 0%,rgba(28,42,68,0) 10%,rgba(28,42,68,0) 90%,rgba(28,42,68,.07) 100%);
+      rgba(30,42,66,.04) 0%,rgba(30,42,66,0) 10%,rgba(30,42,66,0) 90%,rgba(30,42,66,.06) 100%);
   opacity:calc(1 - var(--shade,0));
+  transition:opacity .25s ease;
 }
 
 /* The book sits on a surface, so its shadow is a soft pool underneath —
-   no box, no filter on the artwork, nothing with an edge of its own.
-   Both blobs fade to zero well inside their own bounds, and both ease
-   off while a leaf is in the air. */
+   no box, no filter on the artwork, nothing with an edge of its own.  The
+   book rests on its spine, so the shadow gathers below the middle and
+   thins out toward the sides.  All of it eases off while a leaf is in the
+   air. */
 .sb-cast{position:absolute;pointer-events:none;z-index:-1}
 .sb-cast.ambient{
-  left:-1%;right:-1%;top:6%;bottom:-8%;
-  background:radial-gradient(50% 50% at 50% 58%,
-    rgba(28,42,68,.34) 0%,rgba(28,42,68,.19) 40%,rgba(28,42,68,0) 74%);
-  filter:blur(26px);
+  left:20%;right:20%;top:84%;bottom:-18%;
+  background:radial-gradient(50% 50% at 50% 34%,
+    rgba(28,42,68,.46) 0%,rgba(28,42,68,.21) 45%,rgba(28,42,68,0) 78%);
+  filter:blur(18px);
   opacity:calc(1 - var(--shade,0) * .42);
 }
 .sb-cast.contact{
-  left:4%;right:4%;top:56%;bottom:-4%;
-  background:radial-gradient(50% 44% at 50% 42%,
-    rgba(28,42,68,.40) 0%,rgba(28,42,68,.17) 48%,rgba(28,42,68,0) 78%);
-  filter:blur(11px);
+  left:28%;right:28%;top:92%;bottom:-8%;
+  background:radial-gradient(50% 50% at 50% 28%,
+    rgba(28,42,68,.66) 0%,rgba(28,42,68,.27) 50%,rgba(28,42,68,0) 80%);
+  filter:blur(9px);
   opacity:calc(1 - var(--shade,0) * .5);
 }
 .sb-cast.hair{
-  left:8%;right:8%;top:74%;bottom:2%;
-  background:radial-gradient(50% 52% at 50% 40%,
-    rgba(28,42,68,.34) 0%,rgba(28,42,68,0) 76%);
+  left:34%;right:34%;top:96%;bottom:-2%;
+  background:radial-gradient(50% 60% at 50% 20%,
+    rgba(28,42,68,.60) 0%,rgba(28,42,68,0) 78%);
   filter:blur(4px);
   opacity:calc(1 - var(--shade,0) * .62);
 }
@@ -313,7 +312,7 @@ button{font:inherit}
 .sb-prev{left:0;width:50%}
 .sb-next{right:0;width:50%}
 
-.sb-captions{display:grid;justify-items:center}
+.sb-captions{display:grid;justify-items:center;margin-top:50px}
 .sb-captions>*{grid-area:1/1;margin:0}
 .sb-caption{font-size:13px;letter-spacing:var(--track-caps);text-transform:uppercase;color:var(--ink-soft);
   animation:sb-cap-in .5s ease both}
@@ -331,7 +330,7 @@ button{font:inherit}
 .sb-wrap.intro .sb-caption.cap-out{display:none}
 @media (max-width:640px){
   .hero-kicker{font-size:10.5px;letter-spacing:.16em}
-  .sb-wrap{width:100vw;margin-inline:calc(50% - 50vw)}
+  .sb-wrap{width:100vw;margin-inline:calc(50% - 50vw);padding-inline:20px}
   .sb-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:70;padding:12px 6px}
   .sb-arrow.left{left:2px}
   .sb-arrow.right{right:2px}
@@ -536,8 +535,11 @@ button{font:inherit}
   .book-form{grid-template-columns:1fr}
 }
 
-.foot{font-size:11.5px;letter-spacing:var(--track-caps);text-transform:uppercase;
-  color:var(--ink-faint);text-align:center;margin-top:clamp(48px,7vh,84px);padding-bottom:44px}
+.foot{font-size:11.5px;letter-spacing:var(--track-caps);text-transform:uppercase;line-height:1.8;
+  color:var(--ink-faint);text-align:center;text-wrap:balance;
+  margin-top:clamp(48px,7vh,84px);padding:0 clamp(20px,5vw,48px) 44px}
+/* on a phone the footer is two tidy lines, with no separator left dangling at a line start */
+@media (max-width:640px){.foot{font-size:10.5px;letter-spacing:.16em}.foot span{display:block}.foot .sep{display:none}}
 </style>
 </head>
 <body>
@@ -580,6 +582,7 @@ button{font:inherit}
             <div class="sb-cast hair" aria-hidden="true"></div>
             <div class="sb-book" id="sbBook"></div>
           </div>
+          <div class="sb-crease" aria-hidden="true"></div>
         </div>
         <button class="sb-arrow right" id="sbRight" aria-label="next page">
           <svg viewBox="0 0 14 44" width="14" height="44" fill="none" aria-hidden="true"><polyline points="3,3 11,22 3,41" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -774,7 +777,7 @@ button{font:inherit}
     </p>
   </section>
 
-  <p class="foot">El Dorado Hills, CA · RBS Certified · Licensed &amp; Insured · Vibz Bar LLC</p>
+  <p class="foot"><span>El Dorado Hills, CA · RBS Certified</span> <span class="sep">·</span> <span>Licensed &amp; Insured · Vibz Bar LLC</span></p>
 </main>
 
 <script>
@@ -783,7 +786,7 @@ button{font:inherit}
    Ten plates, one drink each.
    The plate runs to the trimmed edge of the page rather than sitting
    inside a painted border, so the book takes the photograph's own shape
-   and the crease down the middle is drawn by .sb-book:after.  The leaf that
+   and the crease down the middle is drawn by .sb-crease.  The leaf that
    turns is a real curved surface: a chain of nested strips whose tangent
    sweeps through an arc, so the page bends the way paper bends instead
    of pivoting like a flat door.
@@ -1034,12 +1037,12 @@ function hideHint(){hint.classList.add('gone')}
 
 stage.addEventListener('pointerdown',e=>{
   if(e.button!==0)return;
-  hideHint();
   const onBook=e.target.closest('.sb-zone');
   /* Capture and preventDefault only once a drag is really starting on the
      page.  Doing either on every pointerdown in the stage retargets the
      click to the stage, and the arrow buttons never hear about it. */
   if(!onBook||introOn)return;
+  hideHint();                             /* they have found the drag: fade the hint away */
   e.preventDefault();                     /* no text selection, no image drag */
   stage.setPointerCapture(e.pointerId);
   const r=bookRect();
