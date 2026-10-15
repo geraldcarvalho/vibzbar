@@ -23,8 +23,8 @@
 :root{
   --paper:#f4f6f9;
   --ink:#2d3f5e;
-  --ink-soft:rgba(45,63,94,.68);
-  --ink-faint:rgba(45,63,94,.5);
+  --ink-soft:rgba(45,63,94,.82);
+  --ink-faint:rgba(45,63,94,.76);
   --hairline:rgba(45,63,94,.14);
   --earth:#2d3f5e;
   --earth-hover:#1c2a44;
@@ -105,11 +105,9 @@ button{font:inherit}
 .hero-down{
   position:absolute;bottom:30px;left:50%;transform:translateX(-50%);border:0;background:transparent;
   padding:10px 14px;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent;
-  animation:cue-breathe 2.6s ease-in-out infinite;z-index:3;
+  opacity:.6;transition:opacity .2s;z-index:3;
 }
-.hero-down:hover{animation:none;opacity:.7}
-@keyframes cue-breathe{0%,100%{opacity:.08}50%{opacity:.35}}
-@media (prefers-reduced-motion:reduce){.hero-down{animation:none;opacity:.25}}
+.hero-down:hover{opacity:.9}
 
 /* ---------------- sketchbook ---------------- */
 .hero,.hero *{-webkit-user-select:none;-moz-user-select:none;user-select:none}
@@ -122,11 +120,11 @@ button{font:inherit}
 }
 .sb-arrow{
   flex:none;display:inline-flex;align-items:center;justify-content:center;padding:10px 8px;
-  border:0;background:transparent;color:var(--ink-soft);cursor:pointer;opacity:.5;
+  border:0;background:transparent;color:var(--ink-soft);cursor:pointer;opacity:.7;
   transition:color .2s,opacity .2s;
   -webkit-tap-highlight-color:transparent;z-index:8;
 }
-.sb-arrow:hover{color:var(--ink);opacity:.85}
+.sb-arrow:hover{color:var(--ink);opacity:1}
 
 /* the book's own untransformed frame; only .sb-tilt leans underneath */
 .sb-3d{
@@ -541,23 +539,28 @@ button{font:inherit}
   margin-top:clamp(48px,7vh,84px);padding:0 clamp(20px,5vw,48px) 44px}
 /* on a phone the footer is two tidy lines, with no separator left dangling at a line start */
 @media (max-width:640px){.foot{font-size:10.5px;letter-spacing:.16em}.foot span{display:block}.foot .sep{display:none}}
+/* accessibility: visible keyboard focus, skip link */
+a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}
+.sb-arrow:focus-visible,.hero-down:focus-visible{opacity:1}
+.skip{position:absolute;left:12px;top:-60px;z-index:1000;background:var(--ink);color:#fff;padding:10px 16px;font-size:14px;text-decoration:none}
+.skip:focus{top:12px}
 </style>
 </head>
 <body>
+<a class="skip" href="#sketchbook">Skip to content</a>
 <div class="wash" aria-hidden="true"></div>
-<main class="page home">
+<main class="page home" id="main">
 
   <header class="top">
     <a class="name" href="#" aria-label="VIBZ Mobile Bar — home">
       <img src="vibz/wordmark-navy.png" alt="VIBZ Mobile Bar" width="1376" height="247">
     </a>
-    <nav>
+    <nav aria-label="Main">
       <a href="#about">About</a>
       <a href="#experiences">Experiences</a>
       <a href="#contact">Book</a>
       <div class="top-socials">
-        <a href="https://www.instagram.com/vibzbar" target="_blank" rel="me noopener" class="icon-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a>
-        <a href="tel:[YOUR PHONE]" class="icon-btn" aria-label="Phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6.2 3.4h3.1l1.6 4-2 1.3a12 12 0 0 0 5.4 5.4l1.3-2 4 1.6v3.1a1.8 1.8 0 0 1-2 1.8A15.6 15.6 0 0 1 4.4 5.4a1.8 1.8 0 0 1 1.8-2Z"/></svg></a>
+        <a href="https://www.instagram.com/vibzbar" target="_blank" rel="me noopener" class="icon-btn" aria-label="Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a>
         <a href="mailto:hello@vibzbar.com" class="icon-btn" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.4" y="4.6" width="19.2" height="14.8" rx="2.4"/><path d="m3.2 6.4 8.8 6.6 8.8-6.6"/></svg></a>
       </div>
     </nav>
@@ -565,7 +568,7 @@ button{font:inherit}
 
   <section id="sketchbook" class="hero">
 
-    <p class="hero-kicker">Mix · Sip · Unwind / Luxury Mobile Bartending</p>
+    <p class="hero-kicker" role="heading" aria-level="1">Mix · Sip · Unwind / Luxury Mobile Bartending</p>
 
     <div class="sb-wrap" id="sbWrap">
       <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -573,7 +576,7 @@ button{font:inherit}
         <filter id="sb-mblur-2"><feGaussianBlur stdDeviation="14 0"/></filter>
       </svg>
       <div class="sb-stage" id="sbStage">
-        <button class="sb-arrow left" id="sbLeft" aria-label="previous page">
+        <button class="sb-arrow left" id="sbLeft" aria-label="Previous drink">
           <svg viewBox="0 0 14 44" width="14" height="44" fill="none" aria-hidden="true"><polyline points="11,3 3,22 11,41" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="sb-3d" id="sb3d">
@@ -585,7 +588,7 @@ button{font:inherit}
           </div>
           <div class="sb-crease" aria-hidden="true"></div>
         </div>
-        <button class="sb-arrow right" id="sbRight" aria-label="next page">
+        <button class="sb-arrow right" id="sbRight" aria-label="Next drink">
           <svg viewBox="0 0 14 44" width="14" height="44" fill="none" aria-hidden="true"><polyline points="3,3 11,22 3,41" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
@@ -596,7 +599,7 @@ button{font:inherit}
       <p class="sb-hint" id="sbHint">Drag the page to turn</p>
     </div>
 
-    <button class="hero-down" id="heroDown" aria-label="scroll to about">
+    <button class="hero-down" id="heroDown" aria-label="Scroll to About">
       <svg viewBox="0 0 44 22" width="34" height="17" fill="none" aria-hidden="true">
         <polyline points="3,3 22,11 41,3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
         <polyline points="3,11 22,19 41,11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
@@ -606,7 +609,7 @@ button{font:inherit}
 
   <section id="about" class="about">
     <div>
-      <p class="section-label">What we are</p>
+      <p class="section-label" role="heading" aria-level="2">What we are</p>
       <p class="bio bio-lead">Not a bar. An experience that happens to have one.</p>
       <p class="bio">Anyone can pour. We design the hour. A styled bar that belongs in your space. Real glassware, never plastic. Syrups made from scratch. Garnishes you'll photograph before you drink.</p>
       <p class="bio">And a surprise in every glass — one detail we don't tell you about until your guests find it. We arrive early. We leave it spotless. You never touch a thing. You choose the bottles. We build the night around them.</p>
@@ -615,7 +618,7 @@ button{font:inherit}
   </section>
 
   <section id="how" class="plates">
-    <p class="section-label">How it works</p>
+    <p class="section-label" role="heading" aria-level="2">How it works</p>
     <p class="lede">Four steps. That's the whole thing.</p>
     <ol class="step-list">
       <li class="step">
@@ -646,7 +649,7 @@ button{font:inherit}
   </section>
 
   <section id="experiences" class="plates">
-    <p class="section-label">The experiences</p>
+    <p class="section-label" role="heading" aria-level="2">The experiences</p>
     <p class="lede">Three ways to do this.</p>
     <p class="bio bio-note">Every package includes a styled bar, real glassware, house-made syrups, fresh garnishes, ice, mixers, full setup and breakdown, and a licensed, RBS-certified, fully insured team. Four hours of service.</p>
     <ol class="tier-list">
@@ -692,38 +695,38 @@ button{font:inherit}
   </section>
 
   <section id="questions" class="plates">
-    <p class="section-label">Questions</p>
+    <p class="section-label" role="heading" aria-level="2">Questions</p>
     <p class="lede">Answered.</p>
     <ol class="qa-list">
       <li class="qa">
-        <button type="button" aria-expanded="false"><span class="q">Do you provide the alcohol?</span><span class="caret" aria-hidden="true"></span></button>
-        <div class="a"><div><p>No — and that's deliberate. California law makes host-supplied alcohol the cleanest way to do this. You buy it, you own it, you keep what's left. We send you an exact shopping list so it's effortless.</p></div></div>
+        <button type="button" id="faq-q1" aria-expanded="false" aria-controls="faq-a1"><span class="q">Do you provide the alcohol?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a" id="faq-a1"><div><p>No — and that's deliberate. California law makes host-supplied alcohol the cleanest way to do this. You buy it, you own it, you keep what's left. We send you an exact shopping list so it's effortless.</p></div></div>
       </li>
       <li class="qa">
-        <button type="button" aria-expanded="false"><span class="q">How much alcohol do I actually need?</span><span class="caret" aria-hidden="true"></span></button>
-        <div class="a"><div><p>We'll tell you precisely. Our planning tool works from your guest count, service length, and menu — down to the bottle.</p></div></div>
+        <button type="button" id="faq-q2" aria-expanded="false" aria-controls="faq-a2"><span class="q">How much alcohol do I actually need?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a" id="faq-a2"><div><p>We'll tell you precisely. Our planning tool works from your guest count, service length, and menu — down to the bottle.</p></div></div>
       </li>
       <li class="qa">
-        <button type="button" aria-expanded="false"><span class="q">How far do you travel?</span><span class="caret" aria-hidden="true"></span></button>
-        <div class="a"><div><p>25 miles from El Dorado Hills is included. Beyond that, $3/mile. Tahoe, Napa, and the Bay Area are quoted individually — and we love those events.</p></div></div>
+        <button type="button" id="faq-q3" aria-expanded="false" aria-controls="faq-a3"><span class="q">How far do you travel?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a" id="faq-a3"><div><p>25 miles from El Dorado Hills is included. Beyond that, $3/mile. Tahoe, Napa, and the Bay Area are quoted individually — and we love those events.</p></div></div>
       </li>
       <li class="qa">
-        <button type="button" aria-expanded="false"><span class="q">How many bartenders will I have?</span><span class="caret" aria-hidden="true"></span></button>
-        <div class="a"><div><p>One per 50 guests as standard, more when the menu or timeline calls for it. We'll tell you what your night needs, not what's cheapest.</p></div></div>
+        <button type="button" id="faq-q4" aria-expanded="false" aria-controls="faq-a4"><span class="q">How many bartenders will I have?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a" id="faq-a4"><div><p>One per 50 guests as standard, more when the menu or timeline calls for it. We'll tell you what your night needs, not what's cheapest.</p></div></div>
       </li>
       <li class="qa">
-        <button type="button" aria-expanded="false"><span class="q">What do you need from my venue?</span><span class="caret" aria-hidden="true"></span></button>
-        <div class="a"><div><p>6–8 feet behind the bar, 3–4 feet of clearance in front, and a flat surface. That's it. No power required unless we've discussed it.</p></div></div>
+        <button type="button" id="faq-q5" aria-expanded="false" aria-controls="faq-a5"><span class="q">What do you need from my venue?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a" id="faq-a5"><div><p>6–8 feet behind the bar, 3–4 feet of clearance in front, and a flat surface. That's it. No power required unless we've discussed it.</p></div></div>
       </li>
       <li class="qa">
-        <button type="button" aria-expanded="false"><span class="q">How do I lock in my date?</span><span class="caret" aria-hidden="true"></span></button>
-        <div class="a"><div><p>A 40% retainer and a signed agreement. Balance is due 14 days before. Bookings begin at $950. Saturdays in peak season (May–Oct), $1,350 minimum.</p></div></div>
+        <button type="button" id="faq-q6" aria-expanded="false" aria-controls="faq-a6"><span class="q">How do I lock in my date?</span><span class="caret" aria-hidden="true"></span></button>
+        <div class="a" id="faq-a6"><div><p>A 40% retainer and a signed agreement. Balance is due 14 days before. Bookings begin at $950. Saturdays in peak season (May–Oct), $1,350 minimum.</p></div></div>
       </li>
     </ol>
   </section>
 
   <section id="contact" class="contact">
-    <p class="section-label">Book</p>
+    <p class="section-label" role="heading" aria-level="2">Book</p>
     <p class="bio bio-lead">Let's talk about your event.</p>
     <form class="book-form" id="bookForm" action="https://formspree.io/f/[FORMSPREE_ID]" method="POST">
       <div class="field">
@@ -918,7 +921,7 @@ function paint(){
     applyTurn(turn.t);
   }
   const a=el('button','sb-zone sb-prev'),b=el('button','sb-zone sb-next');
-  a.setAttribute('aria-label','previous page');b.setAttribute('aria-label','next page');
+  a.setAttribute('aria-hidden','true');b.setAttribute('aria-hidden','true');a.tabIndex=b.tabIndex=-1;
   book.appendChild(a);book.appendChild(b);
   layout();
   caption();
@@ -1123,7 +1126,7 @@ addEventListener('keydown',e=>{
   if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
   if(e.metaKey||e.ctrlKey||e.altKey)return;
   const t=e.target;
-  if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;
+  if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT'||t.isContentEditable))return;
   e.preventDefault();hideHint();
   step(e.key==='ArrowRight'?'next':'prev');
 });
