@@ -8,25 +8,30 @@
 <meta property="og:title" content="VIBZ — Mobile Bar">
 <meta property="og:description" content="Cocktails worth staying for. Luxury mobile bartending for El Dorado Hills, Sacramento, and everywhere worth celebrating.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#ece7dc">
+<meta name="theme-color" content="#f4f6f9">
 <style>
-@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:block;
-  src:url(sketchbook/instrument-serif.woff2) format('woff2')}
-@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:block;
-  src:url(sketchbook/instrument-serif-italic.woff2) format('woff2')}
-@font-face{font-family:'Newsreader';font-style:normal;font-weight:200 600;font-display:swap;
-  src:url(sketchbook/newsreader.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/CormorantGaramond-Light.ttf) format('truetype')}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/CormorantGaramond-Regular.ttf) format('truetype')}
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/CormorantGaramond-Italic.ttf) format('truetype')}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/CormorantGaramond-Medium.ttf) format('truetype')}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/CormorantGaramond-SemiBold.ttf) format('truetype')}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/CormorantGaramond-Bold.ttf) format('truetype')}
+@font-face{font-family:'Hurme Sans';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/HurmeGeometricSans1-Light.otf) format('opentype')}
+@font-face{font-family:'Hurme Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/HurmeGeometricSans1.otf) format('opentype')}
+@font-face{font-family:'Hurme Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/HurmeGeometricSans1-SemiBold.otf) format('opentype')}
 
 :root{
-  --paper:#ece7dc;
-  --ink:#2b2721;
-  --ink-soft:rgba(43,39,33,.58);
-  --ink-faint:rgba(43,39,33,.36);
-  --hairline:rgba(43,39,33,.14);
-  --earth:#9a6a3e;
-  --display:'Instrument Serif',"New York",Georgia,'Times New Roman',serif;
-  --font:'Newsreader',"New York",Georgia,'Times New Roman',serif;
-  --track-caps:.24em;
+  --paper:#f4f6f9;
+  --ink:#2d3f5e;
+  --ink-soft:rgba(45,63,94,.68);
+  --ink-faint:rgba(45,63,94,.5);
+  --hairline:rgba(45,63,94,.14);
+  --earth:#2d3f5e;
+  --earth-hover:#1c2a44;
+  --lavender:#d4d8e8;
+  --display:'Cormorant Garamond',Georgia,serif;
+  --font:'Hurme Sans',system-ui,sans-serif;
+  --track-caps:.22em;
   --track-nav:.06em;
 }
 *{box-sizing:border-box}
@@ -38,21 +43,11 @@ body{
 }
 a{color:inherit;text-decoration:none}
 button{font:inherit}
-::selection{background:rgba(43,39,33,.85);color:var(--paper)}
+::selection{background:rgba(45,63,94,.85);color:var(--paper)}
 
 /* the painted ground the whole page sits on */
-.wash{
-  position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background:
-    radial-gradient(62% 44% at 16% 6%,rgba(214,211,226,.50) 0%,rgba(214,211,226,0) 62%),
-    radial-gradient(50% 38% at 88% 18%,rgba(154,106,62,.13) 0%,rgba(154,106,62,0) 66%),
-    radial-gradient(72% 52% at 60% 84%,rgba(199,190,170,.36) 0%,rgba(199,190,170,0) 68%),
-    linear-gradient(168deg,#f5f1e7 0%,#f0ebdf 44%,var(--paper) 100%);
-}
-.wash:after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(236,231,220,.10) 0%,rgba(236,231,220,.58) 58%,var(--paper) 90%);
-}
+.wash{position:fixed;inset:0;z-index:-2;pointer-events:none;background:var(--paper)}
+.wash:after{content:none}
 
 /* ---------------- top bar ---------------- */
 .top{
@@ -63,12 +58,12 @@ button{font:inherit}
 .top>*{pointer-events:auto}
 .top:before{
   content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg,rgba(240,236,226,.94),rgba(240,236,226,.7) 48%,rgba(240,236,226,0));
+  background:linear-gradient(180deg,rgba(244,246,249,.94),rgba(244,246,249,.7) 48%,rgba(244,246,249,0));
   -webkit-backdrop-filter:blur(14px) saturate(.95);backdrop-filter:blur(14px) saturate(.95);
   -webkit-mask-image:linear-gradient(180deg,#000 46%,transparent);
   mask-image:linear-gradient(180deg,#000 46%,transparent);
 }
-.top .name{display:block;line-height:0}
+.top .name{display:block;line-height:0;margin-bottom:20px}
 .top .name img{width:clamp(124px,15vw,186px);height:auto;display:block}
 .top nav{
   display:flex;gap:clamp(14px,2vw,26px);font-size:15px;align-items:center;
@@ -98,14 +93,6 @@ button{font:inherit}
   min-height:100svh;overflow-anchor:none;overflow-x:clip;
   padding:clamp(112px,13svh,152px) 0 clamp(72px,10svh,120px);
 }
-.botany{
-  position:absolute;bottom:0;width:clamp(120px,15vw,250px);opacity:.5;
-  pointer-events:none;user-select:none;z-index:0;
-}
-.botany.l{left:clamp(-40px,-1vw,0px);bottom:2%}
-.botany.r{right:clamp(-30px,0vw,10px);bottom:-2%;width:clamp(100px,12vw,200px)}
-@media (max-width:900px){.botany{display:none}}
-
 .hero-kicker{
   font-size:12px;font-weight:400;letter-spacing:var(--track-caps);text-align:center;
   color:var(--ink-soft);margin:0 0 clamp(22px,3.4vh,40px);text-transform:uppercase;
@@ -158,11 +145,11 @@ button{font:inherit}
   position:relative;width:100%;aspect-ratio:1.7608;
   transform-style:preserve-3d;z-index:1;
   box-shadow:
-    -1px 1px 0 #e9e3d4, 1px 1px 0 #e9e3d4,
-    -2px 2px 0 #f6f2e8, 2px 2px 0 #f6f2e8,
-    -3px 3px 0 #ddd6c4, 3px 3px 0 #ddd6c4,
-    -4px 4px 0 #f3eee2, 4px 4px 0 #f3eee2,
-    -5px 5px 0 #d4ccb7, 5px 5px 0 #d4ccb7;
+    -1px 1px 0 #e3e7ef, 1px 1px 0 #e3e7ef,
+    -2px 2px 0 #f7f8fb, 2px 2px 0 #f7f8fb,
+    -3px 3px 0 #d4d8e8, 3px 3px 0 #d4d8e8,
+    -4px 4px 0 #eef0f6, 4px 4px 0 #eef0f6,
+    -5px 5px 0 #c5cbdc, 5px 5px 0 #c5cbdc;
 }
 /* the crease and the pages' own curvature live on the book, not on the
    settled page, so they do not pop out of existence the moment a leaf lifts.
@@ -173,8 +160,8 @@ button{font:inherit}
   pointer-events:none;z-index:5;
   background:
     linear-gradient(90deg,
-      rgba(52,38,20,0) 39%,rgba(52,38,20,.07) 46.5%,rgba(52,38,20,.22) 50%,
-      rgba(52,38,20,.07) 53.5%,rgba(52,38,20,0) 61%);
+      rgba(28,42,68,0) 39%,rgba(28,42,68,.07) 46.5%,rgba(28,42,68,.22) 50%,
+      rgba(28,42,68,.07) 53.5%,rgba(28,42,68,0) 61%);
   opacity:calc(1 - var(--shade,0));
 }
 
@@ -186,21 +173,21 @@ button{font:inherit}
 .sb-cast.ambient{
   left:-1%;right:-1%;top:6%;bottom:-8%;
   background:radial-gradient(50% 50% at 50% 58%,
-    rgba(58,44,26,.34) 0%,rgba(58,44,26,.19) 40%,rgba(58,44,26,0) 74%);
+    rgba(28,42,68,.34) 0%,rgba(28,42,68,.19) 40%,rgba(28,42,68,0) 74%);
   filter:blur(26px);
   opacity:calc(1 - var(--shade,0) * .42);
 }
 .sb-cast.contact{
   left:4%;right:4%;top:56%;bottom:-4%;
   background:radial-gradient(50% 44% at 50% 42%,
-    rgba(44,32,14,.40) 0%,rgba(44,32,14,.17) 48%,rgba(44,32,14,0) 78%);
+    rgba(28,42,68,.40) 0%,rgba(28,42,68,.17) 48%,rgba(28,42,68,0) 78%);
   filter:blur(11px);
   opacity:calc(1 - var(--shade,0) * .5);
 }
 .sb-cast.hair{
   left:8%;right:8%;top:74%;bottom:2%;
   background:radial-gradient(50% 52% at 50% 40%,
-    rgba(40,28,10,.34) 0%,rgba(40,28,10,0) 76%);
+    rgba(28,42,68,.34) 0%,rgba(28,42,68,0) 76%);
   filter:blur(4px);
   opacity:calc(1 - var(--shade,0) * .62);
 }
@@ -229,8 +216,8 @@ button{font:inherit}
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
   mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
 }
-.gutter-shade.left{right:0;background:linear-gradient(270deg,rgba(52,38,20,.30),rgba(52,38,20,0) 82%)}
-.gutter-shade.right{left:0;background:linear-gradient(90deg,rgba(52,38,20,.24),rgba(52,38,20,0) 82%)}
+.gutter-shade.left{right:0;background:linear-gradient(270deg,rgba(28,42,68,.30),rgba(28,42,68,0) 82%)}
+.gutter-shade.right{left:0;background:linear-gradient(90deg,rgba(28,42,68,.24),rgba(28,42,68,0) 82%)}
 
 /* ---- the turning leaf: nested strips forming a curved surface ---- */
 .curl{
@@ -277,14 +264,14 @@ button{font:inherit}
 }
 .face .sh{position:absolute;inset:0;pointer-events:none}
 .curl.next .face.front .sh,.curl.prev .face.back .sh{
-  background:linear-gradient(90deg,rgba(58,43,20,var(--a1,0)),rgba(58,43,20,var(--a2,0)));
+  background:linear-gradient(90deg,rgba(28,42,68,var(--a1,0)),rgba(28,42,68,var(--a2,0)));
 }
 .curl.next .face.back .sh,.curl.prev .face.front .sh{
-  background:linear-gradient(90deg,rgba(58,43,20,var(--a2,0)),rgba(58,43,20,var(--a1,0)));
+  background:linear-gradient(90deg,rgba(28,42,68,var(--a2,0)),rgba(28,42,68,var(--a1,0)));
 }
 .face .gl{
   position:absolute;inset:0;
-  pointer-events:none;background:#fffaf0;
+  pointer-events:none;background:#fff;
   opacity:calc(var(--shade,0) * var(--lit,1) * var(--lit,1) * .20);
 }
 
@@ -333,13 +320,6 @@ button{font:inherit}
 }
 
 /* ---------------- painted rules + sections ---------------- */
-.rule{
-  display:block;width:min(1080px,86vw);margin:clamp(30px,6vh,64px) auto;
-  height:clamp(26px,4vw,46px);
-  background:url(vibz/divider.svg) center / 100% auto no-repeat;
-  opacity:.5;
-}
-.rule.short{width:min(420px,52vw);opacity:.4}
 .section-label{
   font-size:11px;letter-spacing:var(--track-caps);text-transform:uppercase;
   color:var(--ink-faint);margin:0 0 18px;
@@ -347,16 +327,28 @@ button{font:inherit}
 .about{
   position:relative;max-width:1080px;margin:0 auto;
   padding:0 clamp(20px,5vw,48px);
-  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,60px);align-items:start;
+  display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(24px,4vw,48px);align-items:center;
 }
-.bio{font-size:clamp(17px,1.7vw,20px);line-height:1.74;letter-spacing:.005em;margin:0;font-weight:300;max-width:56ch}
+.bio{font-size:clamp(14px,1.3vw,15.5px);line-height:1.6;letter-spacing:.005em;margin:0;font-weight:400;color:var(--ink-soft);max-width:56ch}
 .bio-link{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(26,35,50,.28);
   text-underline-offset:4px;transition:text-decoration-color .2s}
 .bio-link:hover{text-decoration-color:var(--ink)}
-.bloom{width:clamp(150px,17vw,260px);opacity:.9;user-select:none;align-self:center}
+/* The watercolour is opaque with a white fade at its edges.  Multiplying it
+   into the page colour drops the white out, and the soft mask feathers
+   whatever is left, so it settles into the paper instead of sitting on it. */
+.about-art{
+  position:relative;width:100%;aspect-ratio:1.25;overflow:hidden;
+  user-select:none;
+}
+.about-art img{
+  position:absolute;left:-22%;top:-19%;width:150%;max-width:none;height:auto;
+  mix-blend-mode:multiply;
+  -webkit-mask-image:radial-gradient(ellipse 52% 52% at 50% 50%,#000 58%,transparent 100%);
+  mask-image:radial-gradient(ellipse 52% 52% at 50% 50%,#000 58%,transparent 100%);
+}
 @media (max-width:760px){
   .about{grid-template-columns:1fr}
-  .bloom{width:170px;justify-self:center}
+  .about-art{max-width:480px;justify-self:center}
 }
 
 .contact{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,48px)}
@@ -374,7 +366,7 @@ button{font:inherit}
   background:transparent;text-align:left;cursor:pointer;color:inherit;
   transition:background-color .22s ease,padding-left .22s ease;
 }
-.plate:hover,.plate[aria-current="true"]{background:rgba(255,252,244,.5);padding-left:12px}
+.plate:hover,.plate[aria-current="true"]{background:rgba(255,255,255,.5);padding-left:12px}
 .plate .n{font-size:12px;color:var(--ink-faint);letter-spacing:var(--track-nav)}
 .plate .t{font-family:var(--display);font-size:clamp(19px,2.1vw,26px)}
 .plate .p{font-size:12.5px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;text-align:right}
@@ -385,32 +377,51 @@ button{font:inherit}
         hairline rules, an indented number, the same restrained scale. ---- */
 /* the fixed bar would otherwise sit on top of a section's own label */
 .about,.plates,.contact{scroll-margin-top:clamp(96px,13vh,132px)}
+.plates,.contact{margin-top:clamp(72px,11vh,120px)}
+/* a barely-there grey-blue band behind How it works, full width of the page */
+#how{
+  background:#eceef3;padding-block:clamp(44px,7vh,72px);
+  box-shadow:0 0 0 100vmax #eceef3;clip-path:inset(0 -100vmax);
+}
 
 .lede{
   font-family:var(--display);font-size:clamp(24px,3vw,38px);line-height:1.18;
   letter-spacing:.005em;margin:0 0 clamp(20px,3vh,34px);max-width:22ch;
 }
-.bio-lead{font-family:var(--display);font-size:clamp(23px,2.7vw,34px);line-height:1.2;
+.bio-lead{font-family:var(--display);font-size:clamp(24px,3vw,38px);line-height:1.18;color:var(--ink);
   font-weight:400;letter-spacing:.005em;max-width:20ch;margin-bottom:.5em}
 .bio-note{font-size:clamp(14px,1.4vw,16px);color:var(--ink-soft);max-width:64ch}
-.bio-rule{
-  margin-top:1.5em;padding-top:1.2em;border-top:1px solid var(--hairline);
-  font-family:var(--display);font-size:clamp(19px,2vw,25px);line-height:1.3;max-width:24ch;
-}
 
 .step-list,.tier-list,.qa-list{list-style:none;margin:0;padding:0}
-.step-list{border-top:1px solid var(--hairline)}
+/* Four columns, each a number, a thin-line icon, a title and a short line,
+   divided by hairlines.  Stacks to one column on a phone. */
+.step-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(8px,2vh,20px)}
 .step{
-  display:grid;grid-template-columns:3.4em minmax(0,1fr);gap:18px;align-items:baseline;
-  padding:20px 4px;border-bottom:1px solid var(--hairline);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  padding:6px clamp(14px,2vw,28px);
 }
-.step .n{font-size:12px;color:var(--ink-faint);letter-spacing:var(--track-nav)}
-.step h3{font-family:var(--display);font-weight:400;font-size:clamp(19px,2.1vw,26px);margin:0 0 .3em}
-.step p{margin:0;font-size:clamp(15px,1.5vw,17px);line-height:1.6;color:var(--ink-soft);max-width:52ch}
+.step+.step{border-left:1px solid var(--hairline)}
+.step .n{font-size:12px;color:var(--ink-faint);letter-spacing:.3em;padding-left:.3em}
+.step-icon{width:clamp(52px,5.4vw,64px);height:auto;margin:clamp(16px,2.4vh,24px) 0 clamp(14px,2vh,20px);color:var(--ink-soft)}
+.step h3{font-family:var(--display);font-weight:400;font-size:clamp(21px,2vw,25px);line-height:1.2;margin:0 0 .5em}
+@media (min-width:901px){.step h3{display:flex;align-items:center;justify-content:center;min-height:2.4em;margin-bottom:.3em}}
+.step p{margin:0;font-size:clamp(14px,1.3vw,15.5px);line-height:1.6;color:var(--ink-soft);max-width:24ch}
+@media (max-width:900px){
+  .step-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .step{padding-block:26px}
+  .step:nth-child(odd){border-left:0}
+  .step:nth-child(n+3){border-top:1px solid var(--hairline)}
+}
+@media (max-width:560px){
+  .step-list{grid-template-columns:1fr}
+  .step+.step{border-left:0;border-top:1px solid var(--hairline)}
+  .step:nth-child(n+3){border-top:1px solid var(--hairline)}
+  .step{padding-block:28px}
+  .step p{max-width:30ch}
+}
 
 .tier-list{display:grid;gap:0;border-top:1px solid var(--hairline)}
 .tier{padding:26px 4px;border-bottom:1px solid var(--hairline)}
-.tier.featured{background:rgba(255,252,244,.5);padding-inline:18px}
 .tier-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.6em 1.2em;margin-bottom:.9em}
 .tier-head h3{font-family:var(--display);font-weight:400;font-size:clamp(22px,2.5vw,30px);margin:0}
 .tier-price{font-size:12.5px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;
@@ -418,7 +429,7 @@ button{font:inherit}
 .tier.featured .tier-price{color:var(--earth)}
 .tier-badge{
   font-family:var(--font);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--earth);border:1px solid currentColor;padding:.28em .6em;vertical-align:.32em;
+  color:#fff;background:var(--ink);border-radius:999px;padding:.4em .95em;vertical-align:.28em;
   margin-left:.5em;white-space:nowrap;
 }
 .tier ul{list-style:none;margin:0;padding:0;max-width:56ch}
@@ -454,8 +465,6 @@ button{font:inherit}
 @media (prefers-reduced-motion:reduce){.qa .a{transition:none}}
 
 @media (max-width:640px){
-  .step{grid-template-columns:2.6em minmax(0,1fr);gap:12px;padding:17px 2px}
-  .tier.featured{padding-inline:12px}
   .tier-price{margin-left:0}
 }
 
@@ -472,8 +481,8 @@ button{font:inherit}
 .book-form .opt{letter-spacing:.08em;text-transform:none;color:var(--ink-faint)}
 .book-form input,.book-form select,.book-form textarea{
   width:100%;font:inherit;font-size:16px;line-height:1.4;color:var(--ink);
-  padding:12px 14px;border:1px solid var(--hairline);border-radius:0;
-  background:rgba(255,252,244,.5);
+  padding:12px 14px;border:1px solid var(--hairline);border-radius:8px;
+  background:#fff;
   -webkit-appearance:none;appearance:none;
   transition:border-color .2s ease,background-color .2s ease;
 }
@@ -487,16 +496,16 @@ button{font:inherit}
 .book-form input:hover,.book-form select:hover,.book-form textarea:hover{border-color:var(--ink-faint)}
 .book-form input:focus-visible,.book-form select:focus-visible,.book-form textarea:focus-visible{
   outline:2px solid var(--earth);outline-offset:2px;border-color:var(--earth);
-  background:rgba(255,252,244,.9);
+  background:rgba(255,255,255,.9);
 }
 .book-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:6px}
 .form-btn{
-  padding:15px 30px;border:1px solid var(--earth);background:var(--earth);color:var(--paper);
+  padding:15px 32px;border-radius:999px;border:1px solid var(--earth);background:var(--earth);color:var(--paper);
   font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;
-  transition:background-color .2s ease,color .2s ease;
+  transition:background-color .32s cubic-bezier(.22,.61,.36,1),color .2s ease;
 }
-.form-btn:hover{background:#85592f;border-color:#85592f}
+.form-btn:hover{background:var(--earth-hover);border-color:var(--earth-hover)}
 .form-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .form-btn:disabled{opacity:.55;cursor:default}
 .form-status{margin:0;font-size:15px;line-height:1.5;color:var(--ink-soft);max-width:44ch}
@@ -505,26 +514,6 @@ button{font:inherit}
 @media (max-width:640px){
   .book-form{grid-template-columns:1fr}
 }
-
-/* HOLIDAY EDITION START */
-.holiday-banner{
-  display:block;width:100%;padding:13px clamp(20px,5vw,48px);text-align:center;
-  background:var(--earth);color:var(--paper);text-decoration:none;
-  font-size:12.5px;line-height:1.5;letter-spacing:var(--track-nav);text-transform:uppercase;
-  transition:background-color .2s ease;
-}
-.holiday-banner:hover{background:#85592f}
-.holiday-banner:focus-visible,.holiday-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.holiday-cta{margin:clamp(24px,4vh,36px) 0 0}
-.holiday-btn{
-  display:inline-block;padding:14px 26px;border:1px solid var(--earth);
-  color:var(--earth);text-decoration:none;
-  font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
-  transition:background-color .2s ease,color .2s ease;
-}
-.holiday-btn:hover{background:var(--earth);color:var(--paper)}
-.holiday-fine{margin-top:14px;font-size:13px}
-/* HOLIDAY EDITION END */
 
 .foot{font-size:11.5px;letter-spacing:var(--track-caps);text-transform:uppercase;
   color:var(--ink-faint);text-align:center;margin-top:clamp(48px,7vh,84px);padding-bottom:14px}
@@ -541,14 +530,11 @@ button{font:inherit}
 
   <header class="top">
     <a class="name" href="#" aria-label="VIBZ Mobile Bar — home">
-      <img src="vibz/wordmark-navy.png" alt="VIBZ Mobile Bar" width="980" height="167">
+      <img src="vibz/wordmark-navy.png" alt="VIBZ Mobile Bar" width="1376" height="247">
     </a>
     <nav>
       <a href="#about">About</a>
       <a href="#experiences">Experiences</a>
-      <!-- HOLIDAY EDITION START -->
-      <a href="#holiday">Holiday</a>
-      <!-- HOLIDAY EDITION END -->
       <a href="#contact">Book</a>
       <div class="top-socials">
         <a href="https://www.instagram.com/vibzbar" target="_blank" rel="me noopener" class="icon-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a>
@@ -559,8 +545,6 @@ button{font:inherit}
   </header>
 
   <section id="sketchbook" class="hero">
-    <img class="botany l" src="vibz/botany-left.svg" alt="" aria-hidden="true">
-    <img class="botany r" src="vibz/botany-right.svg" alt="" aria-hidden="true">
 
     <p class="hero-kicker">Mix · Sip · Unwind / Luxury Mobile Bartending</p>
 
@@ -600,24 +584,15 @@ button{font:inherit}
     </button>
   </section>
 
-  <!-- HOLIDAY EDITION START -->
-  <a class="holiday-banner" href="#contact">The Holiday Edition: five winter cocktails, Nov 20 to Dec 31. Eight dates.</a>
-  <!-- HOLIDAY EDITION END -->
-
-  <div class="rule" aria-hidden="true"></div>
-
   <section id="about" class="about">
     <div>
       <p class="section-label">What we are</p>
       <p class="bio bio-lead">Not a bar. An experience that happens to have one.</p>
       <p class="bio">Anyone can pour. We design the hour. A styled bar that belongs in your space. Real glassware, never plastic. Syrups made from scratch. Garnishes you'll photograph before you drink.</p>
-      <p class="bio">And a surprise in every glass — one detail we don't tell you about until your guests find it. We arrive early. We leave it spotless. You never touch a thing.</p>
-      <p class="bio bio-rule">You choose the bottles. We build the night around them.</p>
+      <p class="bio">And a surprise in every glass — one detail we don't tell you about until your guests find it. We arrive early. We leave it spotless. You never touch a thing. You choose the bottles. We build the night around them.</p>
     </div>
-    <img class="bloom" src="vibz/bloom.svg" alt="" aria-hidden="true">
+    <div class="about-art" aria-hidden="true"><img src="vibz/bar_illustration.png" alt="" width="1181" height="768"></div>
   </section>
-
-  <div class="rule short" aria-hidden="true"></div>
 
   <section id="how" class="plates">
     <p class="section-label">How it works</p>
@@ -625,24 +600,30 @@ button{font:inherit}
     <ol class="step-list">
       <li class="step">
         <span class="n">01</span>
-        <div><h3>Tell us about the night</h3><p>Date, headcount, address, vibe. Two minutes.</p></div>
+        <svg class="step-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14h40a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H33l-11 9v-9H12a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4Z"/><path d="M20 25h24M20 33h14"/></svg>
+        <h3>Tell us about the night</h3>
+        <p>Date, headcount, address, vibe. Two minutes.</p>
       </li>
       <li class="step">
         <span class="n">02</span>
-        <div><h3>We design the menu</h3><p>Signature cocktails built around your event. You approve every one.</p></div>
+        <svg class="step-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18h40L32 40Z"/><path d="M32 40v13M22 53h20"/><path d="M43 8 29 28"/><circle cx="30.5" cy="25.5" r="2.7"/></svg>
+        <h3>We design the menu</h3>
+        <p>Signature cocktails built around your event. You approve every one.</p>
       </li>
       <li class="step">
         <span class="n">03</span>
-        <div><h3>You shop, we guide</h3><p>We send you an exact list — brands, bottles, quantities. You buy it. You own it.</p></div>
+        <svg class="step-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 30c0-5 4-6 4-12v-6h9v6c0 6 4 7 4 12v22a3 3 0 0 1-3 3H17a3 3 0 0 1-3-3Z"/><path d="M14 41h17"/><path d="M42 22v-8h7v8c0 3 3 4 3 9v21a3 3 0 0 1-3 3h-7a3 3 0 0 1-3-3V31c0-5 3-6 3-9Z"/></svg>
+        <h3>You shop, we guide</h3>
+        <p>We send you an exact list — brands, bottles, quantities. You buy it. You own it.</p>
       </li>
       <li class="step">
         <span class="n">04</span>
-        <div><h3>We handle the rest</h3><p>Setup, service, breakdown. You're a guest at your own party.</p></div>
+        <svg class="step-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M26 14c1.6 9.5 5.3 13.2 15 15-9.700 1.800-13.400 5.500-15 15-1.600-9.500-5.300-13.200-15-15 9.700-1.800 13.400-5.500 15-15Z"/><path d="M46 8c.8 4.600 2.600 6.400 7.200 7.200-4.600.8-6.400 2.600-7.200 7.200-.8-4.600-2.600-6.400-7.200-7.200C43.400 14.400 45.200 12.600 46 8Z"/><path d="M47 40c.6 3.400 1.900 4.700 5.300 5.300-3.400.6-4.700 1.900-5.300 5.300-.6-3.400-1.900-4.700-5.300-5.300 3.400-.6 4.700-1.900 5.300-5.300Z"/></svg>
+        <h3>We handle the rest</h3>
+        <p>Setup, service, breakdown. You're a guest at your own party.</p>
       </li>
     </ol>
   </section>
-
-  <div class="rule short" aria-hidden="true"></div>
 
   <section id="experiences" class="plates">
     <p class="section-label">The experiences</p>
@@ -690,43 +671,6 @@ button{font:inherit}
     </ol>
   </section>
 
-  <div class="rule short" aria-hidden="true"></div>
-
-  <!-- HOLIDAY EDITION START -->
-  <section id="holiday" class="plates">
-    <p class="section-label">The Holiday Edition</p>
-    <p class="lede">Five cocktails. Six weeks. Eight dates.</p>
-    <p class="bio bio-note">Same three experiences, same prices. Every holiday booking gets a winter menu that only exists Nov 20 to Dec 31.</p>
-    <ol class="step-list">
-      <li class="step">
-        <span class="n">01</span>
-        <div><h3>Spiced Pear Old Fashioned</h3><p>Bourbon, spiced pear syrup, orange oil.</p></div>
-      </li>
-      <li class="step">
-        <span class="n">02</span>
-        <div><h3>Cranberry Rosemary Spritz</h3><p>Sparkling wine, cranberry, rosemary, a frozen cranberry garnish.</p></div>
-      </li>
-      <li class="step">
-        <span class="n">03</span>
-        <div><h3>Brown Butter Espresso Martini</h3><p>The dessert course in a glass.</p></div>
-      </li>
-      <li class="step">
-        <span class="n">04</span>
-        <div><h3>Winter Citrus Paloma</h3><p>Tequila, blood orange, grapefruit, salted rim.</p></div>
-      </li>
-      <li class="step">
-        <span class="n">05</span>
-        <div><h3>Pomegranate Ginger Fizz</h3><p>Zero-proof, made with the same care.</p></div>
-      </li>
-    </ol>
-    <p class="bio bio-rule">For New Year's Eve, add Champagne Toast Service. For the late crowd, the Espresso Martini Station.</p>
-    <p class="holiday-cta"><a class="holiday-btn" href="#contact">Book a holiday date</a></p>
-    <p class="bio bio-note holiday-fine">December bookings close Nov 20.</p>
-  </section>
-
-  <div class="rule short" aria-hidden="true"></div>
-  <!-- HOLIDAY EDITION END -->
-
   <section id="questions" class="plates">
     <p class="section-label">Questions</p>
     <p class="lede">Answered.</p>
@@ -757,8 +701,6 @@ button{font:inherit}
       </li>
     </ol>
   </section>
-
-  <div class="rule short" aria-hidden="true"></div>
 
   <section id="contact" class="contact">
     <p class="section-label">Book</p>
