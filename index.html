@@ -594,7 +594,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset
       </div>
       <div class="sb-captions" id="sbCaptions"></div>
       <div class="sb-tools">
-        <span class="plate-count" id="plateCount" aria-live="polite">01 / 10</span>
+        <span class="plate-count" id="plateCount" aria-live="polite">01 / 08</span>
       </div>
       <p class="sb-hint" id="sbHint">Drag the page to turn</p>
     </div>
@@ -787,7 +787,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset
 <script>
 /* =====================================================================
    VIBZ — the cocktail book.
-   Ten plates, one drink each.
+   Eight cocktail recipes, Fall 2026.
    The plate runs to the trimmed edge of the page rather than sitting
    inside a painted border, so the book takes the photograph's own shape
    and the crease down the middle is drawn by .sb-crease.  The leaf that
@@ -796,33 +796,26 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset
    of pivoting like a flat door.
    ===================================================================== */
 const Q=new URLSearchParams(location.search);
-const DIR='vibz/plates/';
-/* `pour` is what the drawn page actually says.  The original's spreads were
-   sketches with nothing to read, so a title was description enough; these
-   carry a written-up recipe, and a screen reader should get it too. */
+const DIR='vibz/recipes/fall2026/';
 /* `note` is what the plate shows.  It becomes the image's alt text, so the
    drink reaches a screen reader as well as an eye. */
 const PAGES=[
-  {file:'the-toast.jpg',          title:'The Toast',        place:'The welcome pour',
-   note:'two signature cocktails raised in a toast'},
-  {file:'gin-tonic.jpg',          title:'Gin & Tonic',      place:'The copa',
-   note:'a copa of gin and tonic with cucumber and juniper'},
-  {file:'gin-pizza.jpg',          title:'Gin Cooler',       place:'Cocktail hour',
-   note:'two berry and cucumber gin coolers'},
-  {file:'negroni-tataki.jpg',     title:'Negroni',          place:'Before dinner',
-   note:'a negroni with orange peel'},
-  {file:'old-fashioned-nuts.jpg', title:'Old Fashioned',    place:'The slow one',
-   note:'an old fashioned over one large cube'},
-  {file:'highball-karaage.jpg',   title:'Whisky Highball',  place:'Late service',
-   note:'a whisky highball with lemon'},
-  {file:'rum-bao.jpg',            title:'Rum & Mint',       place:'The second act',
-   note:'dark rum with lime and mint'},
-  {file:'sake-yakitori.jpg',      title:'Sake',             place:'The quiet table',
-   note:'a sake flask and cup on a wooden tray'},
-  {file:'sangria-skewers.jpg',    title:'Sangria',          place:'For the crowd',
-   note:'a pitcher of sangria poured into two glasses'},
-  {file:'matcha-dorayaki.jpg',    title:'Matcha Latte',     place:'Zero proof',
-   note:'a matcha latte with a leaf poured into the foam'}
+  {file:'coconut-washed-white-negroni.png', title:'Coconut Washed White Negroni', place:'The washed one',
+   note:'a coconut fat-washed white negroni in a coupe glass'},
+  {file:'smoked-paloma.png',                title:'Smoked Paloma',                place:'The smoky arrival',
+   note:'a smoked paloma with charred citrus over ice'},
+  {file:'clear-coffee-negroni.png',         title:'Clear Coffee Negroni',         place:'After dinner',
+   note:'a clarified coffee negroni served in a crystal rocks glass'},
+  {file:'elder-fashioned.png',              title:'Elder Fashioned',              place:'The slow one',
+   note:'an elderflower old fashioned with a large clear cube'},
+  {file:'spiced-carajillo.png',             title:'Spiced Carajillo',             place:'Late service',
+   note:'a spiced carajillo with espresso and liqueur in a glass'},
+  {file:'headstone.png',                    title:'Headstone',                    place:'The dark hour',
+   note:'a dark and dramatic autumn cocktail'},
+  {file:'apple-pie-sazerac.png',            title:'Apple Pie Sazerac',            place:'The autumn welcome',
+   note:'an apple pie sazerac with bitters and autumn spice'},
+  {file:'apple-cobbler.png',               title:'Apple Cobbler',                place:'The sweet finish',
+   note:'an apple cobbler cocktail with cinnamon and apple'}
 ];
 PAGES.forEach(p=>{p.url=DIR+p.file;p.alt=p.title+' — '+p.note+'.';});
 const M=PAGES.length, LAND=0;   /* the riffle settles back on The Toast */
