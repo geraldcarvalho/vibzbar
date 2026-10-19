@@ -1164,7 +1164,7 @@ bookForm.addEventListener('submit',async e=>{
     if(!r.ok)throw new Error(r.status);
     const ok=el('p','bio bio-lead form-thanks');
     ok.setAttribute('role','status');
-    ok.textContent="Thank you. We'll send your proposal within 48 hours.";
+    ok.textContent="Thank you. We'll send your proposal within 24 hours.";
     bookForm.replaceWith(ok);
   }catch(err){
     bookStatus.textContent='Something went wrong. Email us at hello@vibzbar.com.';
