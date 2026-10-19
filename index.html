@@ -338,6 +338,13 @@ button{font:inherit}
 }
 
 /* ---------------- painted rules + sections ---------------- */
+/* ---- Behind the bar ---- */
+#behind .behind-inner{display:grid;grid-template-columns:1fr;gap:clamp(32px,5vw,56px);align-items:start;margin-top:clamp(20px,3vh,28px)}
+@media (min-width:860px){#behind .behind-inner{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}}
+#behind .behind-portrait{width:100%;height:auto;display:block}
+#behind .behind-text .bio+.bio{margin-top:1em}
+#behind .behind-text .bio:last-of-type{margin-top:1em}
+#behind .behind-sig{display:block;font-family:var(--display);font-style:italic;font-size:clamp(14px,1.3vw,15.5px);color:var(--ink-soft);margin-top:.6em}
 .section-label{
   font-size:11px;letter-spacing:var(--track-caps);text-transform:uppercase;
   color:var(--ink-faint);margin:0 0 18px;
@@ -726,6 +733,23 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset
         <div class="a" id="faq-a6"><div><p>A 40% retainer and a signed agreement. Balance is due 14 days before.</p></div></div>
       </li>
     </ol>
+  </section>
+
+  <section id="behind" class="plates">
+    <p class="section-label" role="heading" aria-level="2">Behind the bar</p>
+    <h2 class="lede">The night is the point.</h2>
+    <div class="behind-inner">
+      <img class="behind-portrait" src="vibz/gerald.webp" width="1200" height="891" loading="lazy" alt="Gerald, founder and lead bartender at VIBZ">
+      <div class="behind-text">
+        <p class="bio">A fishing village in South India. Two decades in America. Curious, restless, always building something.</p>
+        <p class="bio">Snowboards, bikes, boats. I've spent my life chasing movement, and a good bar does the same thing — it gets a room moving. People lean in. Strangers talk. The night finds its rhythm.</p>
+        <p class="bio">Ten years behind bars I set up myself. Team offsites, birthdays, friends' kitchens at midnight. Formal training at Cocktail Camp, the bartending school in San Francisco, because I wanted to know why things worked, not just that they did.</p>
+        <p class="bio">Syrups made the day before. A garnish nobody mentions until they find it. We get one life, and I'm not interested in doing this halfway.</p>
+        <p class="bio">Everything else I know came from people who had no reason to teach me and did anyway. This industry is more generous than it has any right to be.</p>
+        <p class="exp-lead">But the craft isn't the point. The night is. I'd like to build yours.</p>
+        <span class="behind-sig">— Gerald</span>
+      </div>
+    </div>
   </section>
 
   <section id="contact" class="contact">
