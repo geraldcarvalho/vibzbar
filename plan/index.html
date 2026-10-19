@@ -360,16 +360,6 @@ const FINE_POINTER = window.matchMedia && matchMedia('(hover: hover)').matches;
 const blank = () => ({ occasion:null, date:null, place:'', placeLabel:'', miles:null, milesBand:null,
   guests:null, hours:PRICING.hours.base, tier:null, addons:[], contact:{name:'',email:'',phone:'',venue:''} });
 let S = blank();
-/* Pre-fill from URL params passed by the main site's booking form */
-(()=>{
-  const qp=new URLSearchParams(location.search);
-  const g=parseInt(qp.get('guests'),10); if(g>0)S.guests=g;
-  const d=qp.get('date'); if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d))S.date=d;
-  const pl=qp.get('place'); if(pl)S.place=pl.trim();
-  const oc=qp.get('occasion');
-  const OCCASIONS_LIST=['A wedding','A holiday party','A birthday','An engagement','A corporate evening','Something else'];
-  if(oc&&OCCASIONS_LIST.includes(oc))S.occasion=oc;
-})();
 let reached = 0;     // highest unlocked section
 let active = 0;      // section crossing the middle of the screen
 
@@ -820,7 +810,23 @@ function restore(){
   return false;
 }
 
-const resumed = restore();
+/* Pre-fill from URL params passed by the main site's booking form.
+   Runs here so resolvePlace and SECTIONS are already in scope. */
+const _qp = new URLSearchParams(location.search);
+const _hasParams = _qp.has('guests') || _qp.has('date') || _qp.has('place') || _qp.has('occasion');
+if(_hasParams){
+  try{ sessionStorage.removeItem('vibz.plan.v2'); }catch(e){}
+  const _g = parseInt(_qp.get('guests'),10); if(_g > 0) S.guests = _g;
+  const _d = _qp.get('date'); if(_d && /^\d{4}-\d{2}-\d{2}$/.test(_d)) S.date = _d;
+  const _pl = _qp.get('place');
+  if(_pl){ S.place = _pl.trim(); const _r = resolvePlace(_pl); if(_r){ S.miles = _r.miles; S.placeLabel = _r.label; } }
+  const _oc = _qp.get('occasion'); if(_oc && OCCASIONS.includes(_oc)) S.occasion = _oc;
+  /* Unlock every consecutive section that is already satisfied */
+  for(let _i = 0; _i < SECTIONS.length - 1; _i++){
+    if(SECTIONS[_i].ready()) reached = _i + 1; else break;
+  }
+}
+const resumed = _hasParams ? false : restore();
 build();
 updateUI();
 if(resumed && reached > 0) setTimeout(() => SECTIONS[reached].el.scrollIntoView({ behavior:'auto', block:'start' }), 60);

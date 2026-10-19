@@ -1172,7 +1172,7 @@ bookForm.addEventListener('submit',async e=>{
     wrap.setAttribute('role','status');
     const msg=el('p','bio bio-lead');msg.textContent="Thank you. We'll send your proposal within 24 hours.";
     const cta=el('p','bio');
-    cta.innerHTML=`Want to explore pricing now? <a class="bio-link" href="/plan/?${p.toString()}">Start your estimate →</a>`;
+    cta.innerHTML=`Want to explore pricing now? <a class="bio-link" href="/plan/?${p.toString()}" target="_blank" rel="noopener">Start your estimate →</a>`;
     wrap.appendChild(msg);wrap.appendChild(cta);
     bookForm.replaceWith(wrap);
   }catch(err){
