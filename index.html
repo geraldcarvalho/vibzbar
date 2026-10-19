@@ -137,7 +137,6 @@ button{font:inherit}
   position:relative;
   transform-style:preserve-3d;
   transform:rotateX(calc(var(--rx,0deg) + 5deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
-  will-change:transform;
 }
 /* Each plate sits inside a white border of --mat on all four sides, so the
    book is a little taller than the photograph:
@@ -242,6 +241,7 @@ button{font:inherit}
   position:absolute;top:0;height:100%;
   width:calc(var(--bw,0px) * var(--span));
   transform-style:preserve-3d;z-index:6;
+  will-change:transform;
 }
 .curl.next{left:50%;transform-origin:left center;transform:rotateY(calc(-1 * var(--tt,0deg)))}
 .curl.prev{right:50%;transform-origin:right center;transform:rotateY(var(--tt,0deg))}
