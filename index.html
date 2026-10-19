@@ -652,19 +652,37 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset
     <p class="section-label" role="heading" aria-level="2">The experience</p>
     <p class="lede">Built around your night.</p>
     <p class="bio">Every night is designed around your guest list, your space and your taste. You choose the bottles. We build the rest.</p>
-    <p class="bio bio-note">Every VIBZ bar includes</p>
-    <ul class="step-list" style="list-style:none;padding:0">
-      <li class="step"><span class="n">—</span><p>A certified, insured bartender</p></li>
-      <li class="step"><span class="n">—</span><p>House-made syrups</p></li>
-      <li class="step"><span class="n">—</span><p>Fresh garnishes</p></li>
-      <li class="step"><span class="n">—</span><p>A styled bar, ice and mixers</p></li>
-      <li class="step"><span class="n">—</span><p>Shatter-resistant drinkware</p></li>
-      <li class="step"><span class="n">—</span><p>Full setup and breakdown</p></li>
-      <li class="step"><span class="n">—</span><p>Four hours of service</p></li>
-    </ul>
-    <p class="bio">Add a menu with your names, hand-cut clear ice, a welcome pour for every guest, a champagne toast or an espresso martini station.</p>
-    <p class="bio bio-note">Experiences run from $1,250 to $5,400, depending on your guest list and the night you build.</p>
-    <p><a class="bio-link" href="#contact">Request your proposal</a></p>
+
+    <ol class="tier-list">
+      <li class="tier">
+        <div class="tier-head">
+          <h3>Every VIBZ bar includes</h3>
+        </div>
+        <ul>
+          <li>A certified, insured bartender</li>
+          <li>House-made syrups</li>
+          <li>Fresh garnishes</li>
+          <li>A styled bar, ice and mixers</li>
+          <li>Shatter-resistant drinkware</li>
+          <li>Full setup and breakdown</li>
+          <li>Four hours of service</li>
+        </ul>
+      </li>
+      <li class="tier">
+        <div class="tier-head">
+          <h3>Want more?</h3>
+        </div>
+        <p class="bio">Add a menu with your names, hand-cut clear ice, a welcome pour for every guest, a champagne toast or an espresso martini station.</p>
+      </li>
+      <li class="tier featured">
+        <div class="tier-head">
+          <h3>Experiences start at $1,250.</h3>
+          <span class="tier-price">$1,250 – $5,400</span>
+        </div>
+        <p class="bio-note">Every proposal is itemised to your night. Request yours and we'll send a full breakdown within 48 hours.</p>
+        <p style="margin-top:1.1em"><a class="bio-link" href="#contact">Request your proposal →</a></p>
+      </li>
+    </ol>
   </section>
 
   <section id="questions" class="plates">
@@ -1134,19 +1152,29 @@ const bookDate=document.getElementById('bf-date');
   const d=new Date(), p=n=>String(n).padStart(2,'0');
   bookDate.min=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
 }
+const OCCASION_MAP={'Holiday party':'A holiday party','Birthday':'A birthday','Engagement':'An engagement','Wedding':'A wedding','Corporate':'A corporate evening','Other':'Something else'};
 bookForm.addEventListener('submit',async e=>{
   e.preventDefault();
   const btn=bookForm.querySelector('.form-btn');
   btn.disabled=true;bookStatus.textContent='';
+  const fd=new FormData(bookForm);
   try{
-    const r=await fetch(bookForm.action,{
-      method:'POST',body:new FormData(bookForm),headers:{Accept:'application/json'}
-    });
+    const r=await fetch(bookForm.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
     if(!r.ok)throw new Error(r.status);
-    const ok=el('p','bio bio-lead form-thanks');
-    ok.setAttribute('role','status');
-    ok.textContent="Thank you. We'll send your proposal within 24 hours.";
-    bookForm.replaceWith(ok);
+    const p=new URLSearchParams();
+    const guests=fd.get('guest_count');const date=fd.get('event_date');
+    const city=fd.get('event_city');const type=fd.get('event_type');
+    if(guests)p.set('guests',guests);
+    if(date)p.set('date',date);
+    if(city)p.set('place',city);
+    if(type&&OCCASION_MAP[type])p.set('occasion',OCCASION_MAP[type]);
+    const wrap=el('div','form-thanks');
+    wrap.setAttribute('role','status');
+    const msg=el('p','bio bio-lead');msg.textContent="Thank you. We'll send your proposal within 24 hours.";
+    const cta=el('p','bio');
+    cta.innerHTML=`Want to explore pricing now? <a class="bio-link" href="/plan/?${p.toString()}">Start your estimate →</a>`;
+    wrap.appendChild(msg);wrap.appendChild(cta);
+    bookForm.replaceWith(wrap);
   }catch(err){
     bookStatus.textContent='Something went wrong. Email us at hello@vibzbar.com.';
     btn.disabled=false;
