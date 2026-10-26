@@ -12,6 +12,10 @@ This site is built on a fork of [Sketchbook](https://github.com/MengTo/sketchboo
 - Website: [mengto.com](https://mengto.com)
 - GitHub: [github.com/MengTo](https://github.com/MengTo)
 
+Built with [Claude Code](https://claude.com/product/claude-code), Anthropic's agentic coding tool.
+
+Imagery, branding, and assets were created with [Flora](https://flora.ai), using Claude via MCP. Big props to the **Flora Academy** team for all of their free training.
+
 ## Stack
 
-Static site (HTML/CSS/JS), deployed on Vercel.
+Static site (HTML/CSS/JS), built with Claude Code and deployed on Vercel.
